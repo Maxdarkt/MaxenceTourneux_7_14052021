@@ -4,7 +4,7 @@
   "description": "realisation d'une api pour gerer un reseau social d'entreprise",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js"
   },
   "author": "Maxdarkt",
   "license": "ISC",

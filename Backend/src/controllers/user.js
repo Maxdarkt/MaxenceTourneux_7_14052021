@@ -2,6 +2,7 @@ const { User } = require('../db/sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const privateKey = require('../auth/private_key')
+const { ValidationError, UniqueConstraintError } = require('sequelize')
 
 // var Cryptr = require('cryptr');
 
@@ -9,15 +10,29 @@ const privateKey = require('../auth/private_key')
 
 exports.signup = (req, res) => {
   // console.log('user:'+ req.body.username +' password: '+ req.body.password)
+  let regexPassword = /[\w.-]{8,16}/;
+  if(!regexPassword.test(req.body.password)){
+    return res.status(400).json({ message: "Le password doit être compris entre 8 et 16 caractères."})
+  }
   bcrypt.hash(req.body.password, 10)
   .then(hash => {
     User.create({
-      username: req.body.username,
-      password: hash
+      ...req.body,
+      password: hash,
     })
     .then(user => {
       console.log(user.toJSON())
       return res.status(201).json({ message: `L'utilisateur ${user.username} a bien été créé !`})
+    })
+    .catch(error =>{
+      if (error instanceof ValidationError) {
+        return res.status(400).json({ message: error.message, data: error })
+      }
+      if (error instanceof UniqueConstraintError) {
+        return res.status(400).json({ message: error.message, data: error })
+      }
+      const message = "Les données ne sont pas correctes."
+      res.status(400).json({ message, data: error })
     })
   })
   .catch(error => {
@@ -27,7 +42,7 @@ exports.signup = (req, res) => {
     if (error instanceof UniqueConstraintError) {
       return res.status(400).json({ message: error.message, data: error })
     }
-    const message = "Problème d'inscription"
+    const message = "L'inscription a échouée. Réessayez dans quelques instants."
     res.status(500).json({ message, data: error })
   })
 }
