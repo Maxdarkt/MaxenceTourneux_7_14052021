@@ -8,7 +8,6 @@ const loginRoutes = require('./src/routes/routeUsers')
 
  
 const app = express()
-const port = 3000
 
 app
     .use(favicon(__dirname + '/favicon.ico'))
@@ -27,4 +26,4 @@ app.use(({ res }) => {
     res.status(404).json({ message })
 })
 
-app.listen(port, () => console.log(`Notre application Node est démarrée sur : http://localhost:${port}`))
+module.exports = app
