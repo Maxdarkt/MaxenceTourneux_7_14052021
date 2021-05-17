@@ -1,0 +1,25 @@
+{
+  "name": "node-groupomania-api",
+  "version": "1.0.0",
+  "description": "realisation d'une api pour gerer un reseau social d'entreprise",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Maxdarkt",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cryptr": "^6.0.2",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mariadb": "^2.5.3",
+    "sequelize": "^6.6.2",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7"
+  }
+}
