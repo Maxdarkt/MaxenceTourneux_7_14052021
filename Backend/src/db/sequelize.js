@@ -1,10 +1,13 @@
 const { Sequelize, DataTypes } = require('sequelize')
-const PokemonModel = require('../models/pokemon')
+const PostModel = require('../models/post')
 const UserModel = require('../models/user')
-const pokemons = require('./mock-pokemon')
+const CommentModel = require('../models/comment')
+const Posts = require('./mock-post')
+const Comments = require('./mock-comments')
 const bcrypt = require('bcrypt')
+const comments = require('../models/comment')
   
-const sequelize = new Sequelize('pokedex', 'root', '', {
+const sequelize = new Sequelize('groupomania', 'root', '', {
   host: 'localhost',
   dialect: 'mariadb',
   dialectOptions: {
@@ -13,19 +16,36 @@ const sequelize = new Sequelize('pokedex', 'root', '', {
   logging: false
 })
   
-const Pokemon = PokemonModel(sequelize, DataTypes)
+const Post = PostModel(sequelize, DataTypes)
 const User = UserModel(sequelize, DataTypes) 
+const Comment = CommentModel(sequelize, DataTypes)
 
 const initDb = () => {
   return sequelize.sync({force: true}).then(_ => {
-    pokemons.map(pokemon => {
-      Pokemon.create({
-        name: pokemon.name,
-        hp: pokemon.hp,
-        cp: pokemon.cp,
-        picture: pokemon.picture,
-        types: pokemon.types,
-      }).then(pokemon => console.log(pokemon.toJSON()))
+    Posts.map(post => {
+      Post.create({
+        userId: post.userId,
+        title: post.title,
+        imageUrl: post.imageUrl,
+        description: post.description,
+        usersLiked: post.usersLiked,
+        usersDisliked: post.usersDisliked,
+        userIdLiked: post.userIdLiked,
+        userIdDisliked: post.userIdDisliked
+      }).then(post => console.log(post.toJSON()))
+    })
+
+    Comments.map(comment => {
+      Comment.create({
+        id: comment.id,
+        userId: comment.userId,
+        postId: comment.postId,
+        message: comment.message,
+        usersLiked: comment.usersLiked,
+        usersDisliked: comment.usersDisliked,
+        userIdLiked: comment.userIdLiked,
+        userIdDisliked: comment.userIdDisliked,
+      }).then(comment => console.log(comment.toJSON()))
     })
 
     bcrypt.hash('userTest', 10)
@@ -45,5 +65,5 @@ const initDb = () => {
 }
   
 module.exports = { 
-  initDb, Pokemon, User
+  initDb, Post, User
 }

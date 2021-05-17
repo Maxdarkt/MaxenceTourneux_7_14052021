@@ -3,9 +3,9 @@ const morgan = require('morgan')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
-const pokemonsRoutes = require('./src/routes/routePokemons')
+const postsRoutes = require('./src/routes/routePosts')
 const loginRoutes = require('./src/routes/routeUsers')
-
+const path = require('path')
  
 const app = express()
 
@@ -17,8 +17,10 @@ app
 sequelize.initDb()
 
 //les points de terminaisons :
-app.use('/api/pokemons', pokemonsRoutes)
+app.use('/api/post', postsRoutes)
 app.use('/api/auth', loginRoutes)
+
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
