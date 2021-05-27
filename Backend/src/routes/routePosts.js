@@ -1,14 +1,25 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config')
 
-const postsCtrl = require('../controllers/posts');
+const postsCtrl = require('../controllers/posts')
+const commentsCtrl = require('../controllers/comments')
+const likeCtrl = require('../controllers/like')
 
-router.get('/', auth, postsCtrl.getAllPosts);
-router.post('/', auth, multer, postsCtrl.createPost);
-router.get('/:id', auth, postsCtrl.getOnePost);
-router.put('/:id', auth, multer, postsCtrl.modifyPost);
-router.delete('/:id', auth, postsCtrl.deletePost);
+//Routes du système CRUD
+router.get('/', auth, postsCtrl.getAllPosts)
+router.post('/', auth, multer, postsCtrl.createPost)
+router.get('/:id', auth, postsCtrl.getOnePost)
+router.put('/:id', auth, multer, postsCtrl.modifyPost)
+router.delete('/:id', auth, postsCtrl.deletePost)
+
+//Routes des comments
+router.post('/:id/comment', auth, commentsCtrl.createComment)
+router.get('/:id/comments', auth, commentsCtrl.getAllCommentsByPostId)
+
+//Routes pour Liker commentaires
+router.post('/:id/like', auth, likeCtrl.likePost)
+
 
 module.exports = router;

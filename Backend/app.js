@@ -12,7 +12,7 @@ const app = express()
 app
     .use(favicon(__dirname + '/favicon.ico'))
     .use(morgan('dev'))//URL en console
-    .use(bodyParser.json())
+    .use(express.json())
 
 sequelize.initDb()
 
@@ -20,7 +20,8 @@ sequelize.initDb()
 app.use('/api/post', postsRoutes)
 app.use('/api/auth', loginRoutes)
 
-app.use('/images', express.static(path.join(__dirname, 'images')))
+// app.use('/images', express.static('images'))
+app.use(express.static(__dirname))
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -34,6 +35,11 @@ app.use((req, res, next) => {
     )
     next()
   })
+  //Insomnia => Multer Erreur
+  // app.use(function (err, req, res, next) {
+  //   console.log('This is the invalid field ->', err.field)
+  //   next(err)
+  // })
 
 //routes
 // app.use('/images', express.static(path.join(__dirname, 'images')));

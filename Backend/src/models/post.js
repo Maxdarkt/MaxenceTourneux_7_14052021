@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Post', {
       id: {
@@ -22,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(300),
         allowNull: false,
         validate: {
-          isUrl: { msg: "Utilisez uniquement une URL valide pour l'image." },
+          // isUrl: { msg: "Utilisez uniquement une URL valide pour l'image." },
           notNull: { msg: "L'URL est une propriété requise" }
         }
       },

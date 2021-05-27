@@ -8,10 +8,18 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          notEmpty: { msg: "L'userId ne peut pas être vide." },
+          notNull: { msg: "L'userId est une propriété requise." }
+        }
       },
       postId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          notEmpty: { msg: "Le postId ne peut pas être vide." },
+          notNull: { msg: "Le postId est une propriété requise." }
+        }
       },
       message: {
         type: DataTypes.STRING(1000),
@@ -21,19 +29,19 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Le message est une propriété requise." }
         }
       },
-      usersLiked: {
+      usersLikedComment: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      usersDisliked: {
+      usersDislikedComment: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      userIdLiked: {
+      userIdLikedComment: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      userIdDisliked: {
+      userIdDislikedComment: {
         type: DataTypes.INTEGER,
         allowNull: false,
       }      

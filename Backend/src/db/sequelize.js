@@ -41,14 +41,14 @@ const initDb = () => {
         userId: comment.userId,
         postId: comment.postId,
         message: comment.message,
-        usersLiked: comment.usersLiked,
-        usersDisliked: comment.usersDisliked,
-        userIdLiked: comment.userIdLiked,
-        userIdDisliked: comment.userIdDisliked,
+        usersLikedComment: comment.usersLikedComment,
+        usersDislikedComment: comment.usersDislikedComment,
+        userIdLikedComment: comment.userIdLikedComment,
+        userIdDislikedComment: comment.userIdDislikedComment,
       }).then(comment => console.log(comment.toJSON()))
     })
 
-    bcrypt.hash('userTest', 10)
+    bcrypt.hash('userTest123!', 10)
     .then(hash => {
       User.create({
         username: 'userTest',
@@ -59,11 +59,33 @@ const initDb = () => {
       .then(user => console.log(user.toJSON()))
     })
 
+    bcrypt.hash('userGuest123!', 10)
+    .then(hash => {
+      User.create({
+        username: 'userGuest',
+        email: 'userGuest@test.com',
+        password: hash,
+        admin: false
+      })
+      .then(user => console.log(user.toJSON()))
+    })
+
+    bcrypt.hash('userAdmin123!', 10)
+    .then(hash => {
+      User.create({
+        username: 'userAdmin',
+        email: 'userAdmin@test.com',
+        password: hash,
+        admin: true
+      })
+      .then(user => console.log(user.toJSON()))
+    })
+
 
     console.log('La base de donnée a bien été initialisée !')
   })
 }
   
 module.exports = { 
-  initDb, Post, User
+  initDb, Post, User, Comment
 }

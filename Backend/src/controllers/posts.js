@@ -1,20 +1,21 @@
 const { Post } = require('../db/sequelize')
 const { ValidationError, UniqueConstraintError } = require('sequelize')
-const auth = require('../middleware/auth')
 const { Op } = require('sequelize')
   
 
 exports.createPost = (req, res) => {
-  //récupérer requete au format form/data pour envoyer fichier
-  //donc il faudra utliser JSON.parse(req.body."thing")
-    Post.create(
-      {
-        ...req.body,
-        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-      })
+  //récupérer requete au format form/data pour envoyer desfichiers
+  //donc il faudra utliser JSON.parse(req.body."post")
+  //const postObject = JSON.parse(req.body)
+  const postObject = req.body
+  console.log(req.file.filename)
+    Post.create({
+      ...postObject,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    })
       .then(post => {
-        const message = `Le pokémon ${req.body.name} a bien été crée.`
-        res.json({ message, data: post })
+        const message = `Le post ${req.body.title} a bien été crée.`
+        res.status(200).json({ message: "ok"})
       })
       .catch(error => {
         if (error instanceof ValidationError) {
@@ -29,6 +30,8 @@ exports.createPost = (req, res) => {
 }
   
 exports.modifyPost = (req, res) => {
+    //récupérer requete au format form/data pour envoyer fichier
+  //donc il faudra utliser JSON.parse(req.body."thing")
     const id = req.params.id
     Post.update(req.body, {
       where: { id: id }
@@ -79,7 +82,7 @@ exports.getAllPosts = (req, res) => {
         res.json({ message, data: rows })
       })
     } else {
-      Post.findAll({ order: ['name'] })//Tri ASC
+      Post.findAll({ order: [['created', 'DESC']]})//Tri ASC
       .then(posts => {
         const message = 'La liste des pokémons a bien été récupérée.'
         res.json({ message, data: posts })
