@@ -2,40 +2,40 @@
   <footer class="footer">
     <div class="footer__container">
       <div>
-        <h4>MEDECINE EXERCÉES AU CABINET :</h4>
+        <h4>Titre 1</h4>
         <ul>
-          <li>CHROMOPUNCTURE</li>
-          <li>BARS ACCESS CONSCIOUSNESS</li>
-          <li>KASINA</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
         </ul>
       </div>
       <div>
-        <h4>MEDECINES COMPLEMENTAIRE A VENIR :</h4>
+        <h4>Titre 1</h4>
         <ul>
-          <li>OLIGOSCAN</li>
-          <li>PHYSIOSCAN</li>
-          <li>MILTA</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
         </ul>
       </div>
       <div>
-        <h4>SARAH IMBERT BETEMPS :</h4>
+        <h4>Titre 1</h4>
         <ul>
-          <li>Thérapeute en Chromopuncture</li>
-          <li>Agréée ASCA</li>
-          <li>Diplômée en Médecine Esogétics</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
         </ul>
       </div>
       <div>
-        <h4>ADRESSE</h4>
+        <h4>Titre 1</h4>
         <ul>
-          <li>Centre Paramedical Genevois</li>
-          <li>AV. Henri-Dunant 2 - 1er étage</li>
-          <li>CH - 1205 Genève</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
+          <li>Aaaaaaa</li>
         </ul>
       </div>
     </div>
     <div class="footer__pied">
-      <p>&#xa9; {{ year() }} SARAH IMBERT BETEMPS - Thérapeute en Chromopuncture</p>
+      <p>&#xa9; {{ year() }} GROUPOMANIA</p>
     </div>
   </footer>
 </template>

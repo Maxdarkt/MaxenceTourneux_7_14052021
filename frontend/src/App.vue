@@ -1,27 +1,25 @@
 <template>
   <div class="nav">
     <div class="nav__logo">
-      <p><img alt="Logo" src="../src/assets/Logo.png"/></p>
+      <p><img alt="Logo" src="../src/assets/logo.png"/></p>
     </div>
     <div class="nav__items">
       <router-link to="/">Accueil</router-link> |
-      <router-link to="/contact">Contact</router-link> |
-      <router-link to="/mentions-legales">Mentions Légales</router-link>
+      <router-link to="/about">About</router-link>
     </div>
   </div>
-
   <router-view/>
-  <Footer/>
+
 </template>
 
 <script>
-import Footer from './components/Footer'
+//import Footer from './components/Footer'
 
 
 export default {
   name: 'App',
   components: {
-    Footer
+    //Footer
   },
   data() {
     return {
@@ -29,8 +27,6 @@ export default {
     }
   }
 }
-
-
 
 </script>
 
@@ -54,14 +50,13 @@ html, body{
   width:100%;
   top:0;
   padding: 0px;
-  height:150px;
+  height:80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff;
-  transition: 400ms;
-  //box-shadow: 0px 10px 20px grey;
-  
+  z-index: 1000;
+ 
   &__logo{
     width:20%;
     display: flex;
@@ -80,8 +75,9 @@ html, body{
     font-weight: bold;
     color: $color-first;
 
-    &.router-link-exact-active {
+    &.router-link-active {
       color: $color-second;
+
     }
   }
 }
