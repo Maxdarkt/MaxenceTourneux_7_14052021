@@ -85,7 +85,7 @@ exports.getAllPosts = (req, res) => {
       Post.findAll({ order: [['created', 'DESC']]})//Tri ASC
       .then(posts => {
         const message = 'La liste des pokémons a bien été récupérée.'
-        res.json({ message, data: posts })
+        res.status(200).json({ message, data: posts })
       })
       .catch(error => {
           const message = `La liste des posts n'a pas pu être récupérée. Réessayez dans quelques instants.`

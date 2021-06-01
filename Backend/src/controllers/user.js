@@ -81,3 +81,13 @@ exports.login = (req, res) => {
         return res.json({ message, data: error })
     })
 }
+exports.delete = (req,res) => {
+  User.destroy({ where: { id: req.body.id}})
+  .then(() => {
+    return res.status(200).json({ message: `L'utilisateur ${req.body.userId} a bien été supprimé !`})
+  })
+  .catch(error => {
+    const message = `L'utilisateur n'a pas pu être supprimé. Réessayez dans quelques instants.`
+    return res.status(500).json({ message: error, data: message  })
+  })
+}
