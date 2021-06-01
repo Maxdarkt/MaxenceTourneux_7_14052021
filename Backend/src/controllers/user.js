@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const privateKey = require('../middleware/private_key')
 const { ValidationError, UniqueConstraintError } = require('sequelize')
+const user = require('../models/user')
 
 // var Cryptr = require('cryptr');
 
@@ -49,7 +50,7 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res) => {
   
-    User.findOne({ where: { username: req.body.username } })
+    User.findOne({ where: { email: req.body.email } })
     .then(user => {
 
         if(!user){
