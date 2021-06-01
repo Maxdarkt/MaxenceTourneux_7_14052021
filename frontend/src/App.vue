@@ -1,14 +1,15 @@
 <template>
-  <div class="nav">
-    <div class="nav__logo">
-      <p><img alt="Logo" src="../src/assets/logo.png"/></p>
-    </div>
-    <div class="nav__items">
-      <router-link to="/">Accueil</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+<div class="nav">
+  <div class="nav__logo">
+    <p><img alt="Logo" src="../src/assets/logo.png"/></p>
   </div>
-  <router-view/>
+  <div class="nav__items">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/profil">Profile</router-link> |
+    <router-link to="/login">Login</router-link>
+  </div>
+</div>
+<router-view />
 
 </template>
 
@@ -21,11 +22,6 @@ export default {
   components: {
     //Footer
   },
-  data() {
-    return {
-    logo: '../src/assets/logo.jpg'
-    }
-  }
 }
 
 </script>
@@ -67,7 +63,7 @@ html, body{
     }
   }
   &__items{
-    width: 25%;
+    width: 35%;
     display:flex;
     justify-content: space-around;
   }

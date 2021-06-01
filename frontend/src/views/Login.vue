@@ -9,18 +9,25 @@
                 <input v-model="email" class="form-row__input" type="text" placeholder="Adresse mail"/>
             </div>
             <div class="form-row" v-if="mode == 'create'">
-                <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom"/>
-                <input v-model="nom" class="form-row__input" type="text" placeholder="Nom"/>
+                <input v-model="username" class="form-row__input" type="text" placeholder="Pseudo"/>
             </div>
             <div class="form-row">
                 <input v-model="password" class="form-row__input" type="password" placeholder="Mot de passe">
             </div>
+            <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
+                Adresse mail et/ou mot de passe invalide
+            </div>
+            <div class="form-row" v-if="mode == 'create' && status == 'error_create'">
+                Adresse mail déjà utilisée
+            </div>
             <div class="form-row">
-                <button class="button" :class="{ 'button--disabled' : !validatedFields}" v-if="mode == 'login'">
-                    Connexion
+                <button class="button" @click="login()" :class="{ 'button--disabled' : !validatedFields}" v-if="mode == 'login'">
+                   <span v-if="status == 'loading'">Connexion en cours ...</span> 
+                   <span v-else>Connexion</span> 
                 </button>
-                <button class="button" :class="{ 'button--disabled' : !validatedFields}" v-else>
-                    Créer mon compte
+                <button class="button" @click="createAccount()" :class="{ 'button--disabled' : !validatedFields}" v-else>
+                    <span v-if="status == 'loading'">Création en cours ...</span> 
+                    <span v-else>Créer mon compte</span> 
                 </button>  
             </div>
         </div>
@@ -29,21 +36,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'Login',
     data: function(){
         return {
             mode: 'login',
             email: '',
-            prenom: '',
-            nom: '',
+            username: '',
             password: '',
         }
     },
     computed: {
         validatedFields: function() {
             if (this.mode == 'create') {
-                if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "") {
+                if (this.email != "" && this.username != "" && this.password != "") {
                     return true;
                 } else {
                     return false;
@@ -55,7 +63,8 @@ export default {
                     return false;
                 }
             }
-        }
+        },
+        ...mapState([ 'status', 'user' ])
     },
     methods: {
         switchToCreateAccount: function() {
@@ -63,26 +72,54 @@ export default {
         },
         switchToLogin: function() {
             this.mode = 'login';
+        },
+        login: function() {
+            const self = this;
+            this.$store.dispatch('login', {
+                email: this.email,
+                password: this.password,
+            })
+            .then(function(){
+                self.$router.push('/')
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+        },
+        createAccount: function() {
+            const self = this;
+            this.$store.dispatch('createAccount', {
+                email: this.email,
+                username: this.username,
+                password: this.password,
+                admin: false
+            })
+            .then(function(){
+                self.login()
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
         }
     }
 }
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .container-card{
     background-color:#0E6DB6;
     min-height:100vh;
     width: 100%;
     margin-top: 80px;
-    padding-top:200px;
+    padding-top:100px;
     display: flex;
     justify-content: center;
 }
 .card{
-    width:50%;
-    height: 330px;
+    width:400px;
+    height: 350px;
     background-color: #BAD5EA;
     border-radius: 10px;
     padding:15px;
@@ -124,8 +161,8 @@ export default {
       border-radius: 10px;
       border: none;
       cursor: pointer;
+      transition : all 400ms;
       &:hover{
-          transition : transform 400ms, background-color 400ms, box-shadow 400ms;
           transform: scale(1.01);
           background-color:#2884ca;
           box-shadow: 0px 12px 7px #7a8085;
@@ -139,7 +176,6 @@ export default {
           transform:none;
           box-shadow: none;
           }
-
       }
 
   }

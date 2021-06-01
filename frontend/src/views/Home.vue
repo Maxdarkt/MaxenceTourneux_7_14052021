@@ -1,33 +1,26 @@
 <template>
 <div class="home">
 
-      <h1>Hello World !</h1>
+      <h1>Posts</h1>
 
-
-
-</div><!--End Home-->
+</div>
 
 </template>
 
 <script>
 
-
 export default {
-  name: 'App',
-  data() {
-    return {
-    application : [
-      {
-        title: "Troubles du système musculaire, ostéo-articualire",
-        example: "Rhumatisme, arthrose, arthrite, lombalgie, ostéoporose, sciatique, fibromyalgie, entorse..."
-      },
-      {
-        title: "Troubles du système digestif",
-        example: "Gastrite, trouble fonctionnel de l'estomac, maladie de l'oesophage, constipation..."
-      }
-    ]} 
-  }
-}
+  name: 'Home',
+  // mounted: {
+  //     function() {
+  //     if(this.$store.state.user.id == -1){
+  //       this.$router.push('/login')
+  //       return
+  //     }
+  //   }
+
+  // },
+}  
 
 </script>
 
