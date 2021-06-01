@@ -19,7 +19,7 @@
         <button @click="logout()" class="button">Déconnexion</button>
       </div>
       <div class="form-row">
-        <button class="button delete">Supprimer mon compte</button>
+        <button @click="deleteAccount()" class="button delete">Supprimer mon compte</button>
       </div>
     </div>
 </div>
@@ -29,6 +29,9 @@
 
 <script>
 import { mapState } from 'vuex'
+import store from '../store/index'
+
+// console.log(store.state.user.id)
 
 export default {
   name: 'Profil',
@@ -55,6 +58,16 @@ export default {
                 console.log(error)
             })
         },
+        deleteAccount: function () {
+            const self = this;
+            this.$store.dispatch('delete', store.state.user)
+            .then(function(){
+                self.$router.push('/login')
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+        }
 
   }
 }

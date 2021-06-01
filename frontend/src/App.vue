@@ -1,27 +1,25 @@
 <template>
-<div class="nav">
-  <div class="nav__logo">
-    <p><img alt="Logo" src="../src/assets/logo.png"/></p>
+
+
+  <div class="nav">
+    <HeaderLogo/>
+    <HeaderNav/>
   </div>
-  <div class="nav__items">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/profil">Profile</router-link> |
-    <router-link to="/login">Login</router-link>
-  </div>
-</div>
-<router-view />
+<router-view/>
 
 </template>
 
 <script>
-//import Footer from './components/Footer'
+import HeaderLogo from './components/Header_logo.vue'
+import HeaderNav from './components/Header_nav.vue'
 
 
 export default {
   name: 'App',
   components: {
-    //Footer
-  },
+    HeaderLogo,
+    HeaderNav
+  }  
 }
 
 </script>
@@ -37,10 +35,12 @@ export default {
   text-align: center;
   color: black;
 }
+
 html, body{
   padding: 0px;
   margin: 0px;
 }
+
 .nav {
   position: fixed;
   width:100%;
@@ -52,29 +52,5 @@ html, body{
   justify-content: space-between;
   background-color: #ffffff;
   z-index: 1000;
- 
-  &__logo{
-    width:20%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    img{
-      height: 80px;
-    }
-  }
-  &__items{
-    width: 35%;
-    display:flex;
-    justify-content: space-around;
-  }
-  a {
-    font-weight: bold;
-    color: $color-first;
-
-    &.router-link-active {
-      color: $color-second;
-
-    }
-  }
 }
 </style>

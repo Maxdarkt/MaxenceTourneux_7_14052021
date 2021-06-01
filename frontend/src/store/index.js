@@ -79,7 +79,21 @@ const store = createStore({
         },
         logout: ({ commit }) => {
             commit('clearStore')
-        }
+        },
+        delete: ({ commit }, userInfos) => {
+            return new Promise((resolve, reject) => {
+                instance.post('auth/delete', userInfos)
+                .then(function (response) {
+                    commit('setStatus', '');
+                    commit('clearStore');
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('setStatus', 'error_create');
+                    reject(error)
+                });
+            })
+        },
     }
 })
 

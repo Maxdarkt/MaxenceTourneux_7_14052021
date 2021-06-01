@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
-import Post from '../views/Post.vue'
 import Home from '../views/Home.vue'
 import Profil from '../views/Profil.vue'
 import store from '../store/index'
@@ -29,15 +28,6 @@ const routes = [
         next()
       }
     }
-  },
-  {
-      path: '/post/:id',
-      name: 'Post',
-      component: Post,
-      props: true,
-      meta: {
-        title: 'PostId',
-      },
   },
   {
     path: '/profil',
