@@ -1,6 +1,7 @@
 const { Post } = require('../db/sequelize')
 const { ValidationError, UniqueConstraintError } = require('sequelize')
 const { Op } = require('sequelize')
+const { response } = require('express')
   
 
 exports.createPost = (req, res) => {
@@ -79,10 +80,18 @@ exports.getAllPosts = (req, res) => {
       })
       .then(({ count, rows }) => {
         const message = `Il y a ${count} posts qui correspondent au terme de recherche ${name}.`
-        res.json({ message, data: rows })
+        res.status(200).json({ message, data: rows })
       })
     } else {
       Post.findAll({ order: [['created', 'DESC']]})//Tri ASC
+      // .then(posts => {
+      //   console.log('GETAllPosts :' + posts)
+      //   res.status(200).json({ posts })
+      // })
+      // .catch(function(error) {
+      //   console.log(error)
+      //   res.status(500)
+      // })
       .then(posts => {
         const message = 'La liste des pokémons a bien été récupérée.'
         res.status(200).json({ message, data: posts })

@@ -23,7 +23,7 @@ exports.createComment = (req, res) => {
 
 exports.getAllCommentsByPostId = (req, res) => {
 console.log(req.params.id)
-    Comment.findAll({ where: { id: req.params.id }, order: [['created', 'DESC']]})//Tri ASC
+    Comment.findAll({ where: { postId: req.params.id }, order: [['created', 'DESC']]})//Tri ASC
     .then(comments => {
       const message = `Les commentaires du post N°${req.params.id} ont bien été récupérés`
       res.status(200).json({ message, data: comments })

@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       usersLiked: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         get() {
           return this.getDataValue('usersLiked').split(',')
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       usersDisliked: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         get() {
           return this.getDataValue('usersDisliked').split(',')
