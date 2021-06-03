@@ -18,9 +18,9 @@
     <div class="post__foot">
       <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
       <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
-      <p class="comments"><i @click="displayComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
+      <p class="comments"><i @click="displayComments(post.id), loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
     </div>
-    <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom"/>
+    <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom" :comments="comments"/>
     
     
   </div>
@@ -47,14 +47,15 @@ export default {
       posts: [''],
       displayCom: [{"id": 0, "check": 0}],
       postId: 0,
-      loading: true
+      loading: true,
+      comments: []
     }
   },
   created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
   },
   mounted () {
-      this.loading = true;
+      this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
       instance.get('post/')
       .then(response => { 
@@ -62,25 +63,37 @@ export default {
         for(let item of response.data.data) {
           this.displayCom[item.id] = ({"id" : item.id, "check" : 0})
         }
-        console.log(this.displayCom)
         })
       .catch(error => { error })
       .finally(() => {
-        this.loading = false
+        this.loading = false // On peut charger le composant
       });
       
   },
   methods: {
-    displayComments: function(postId){
+    displayComments: function(postId){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
       for (let item of this.displayCom) {
-        console.log(item.id +' - ' +postId)
         if(this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 0){
           return this.displayCom[item.id] = ({"id" : postId, "check" : 1})
         } else if (this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 1){
           return this.displayCom[item.id] = ({"id" : postId, "check" : 0})
         }
       }
+    },
+    loadComments: function(postId){
+      console.log(postId)
+      this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
+      instance.get('post/'+ postId +'/comments/' )
+      .then(response => { 
+        // this.comments = response.data.data
+        this.comments[postId] = response.data.data
+        console.log(this.comments)
+        })
+      .catch(error => { error })
+      .finally(() => {
+        this.loading = false // On peut charger le composant
+      });
     }
   }
 }  

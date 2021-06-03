@@ -1,10 +1,9 @@
 <template>
     <div class="post__comments" v-if="displayCom[postId].id == postId && displayCom[postId].check == 1">
-      <p>commentaire 1 du post {{postId}}</p>
-      <p>commentaire 2 du post {{postId}} </p>
-      <p>commentaire 3 du post {{postId}}</p>
-      <p>{{displayCom[postId].id}}</p>
-      <p>{{displayCom[postId].check}}</p>
+      <div v-for="comment in comments[postId]" :key="comment.id">
+          <p>Username {{comment.id}} a écrit - {{comment.created}} :<br/>
+          {{ comment.message}} </p>
+      </div>
     </div>  
 </template>
 
@@ -14,7 +13,8 @@ export default {
     name : 'Component',
     props: {
         postId : Number,
-        displayCom: Array
+        displayCom: Array,
+        comments: Array
     },
     }
 </script>
