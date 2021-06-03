@@ -35,15 +35,6 @@ import store from '../store/index'
 
 export default {
   name: 'Profil',
-  // mounted: {
-  //   function() {
-  //     if(this.$store.state.user.id == -1){
-  //       this.$router.push('/login')
-  //       return
-  //     }
-  //   }
-
-  // },
   computed: {
     ...mapState(['user'])
   },

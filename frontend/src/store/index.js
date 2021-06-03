@@ -30,7 +30,7 @@ const store = createStore({
             state.user.email = data.data.email,
             state.user.admin = data.data.admin,
             state.user.token = data.token,
-            instance.defaults.headers.common['Authorization'] = data.token
+            instance.defaults.headers.common['Authorization'] = 'Bearen ' + data.token
             // console.log(data.data)
             // console.log(data.token)
             //console.log('Bearen :'+instance.defaults.headers.common['Authorization'])

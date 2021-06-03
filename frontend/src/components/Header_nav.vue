@@ -29,7 +29,7 @@ export default {
 @import '/src/sass/_variables';
 
 .nav__items{
-    width: 15%;
+    width: 150px;
     display:flex;
     justify-content: space-around;
   }
