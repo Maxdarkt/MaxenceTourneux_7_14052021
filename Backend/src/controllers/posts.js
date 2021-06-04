@@ -10,9 +10,20 @@ exports.createPost = (req, res) => {
   //const postObject = JSON.parse(req.body)
   const postObject = req.body
   console.log(req.file.filename)
+  var newObject = {
+    userId: postObject.userId,
+    username: postObject.username,
+    title: postObject.title,
+    description: postObject.description,
+    usersLiked: ['0'],
+    usersDisliked: ['0'],
+    userIdLiked: ['0'],
+    userIdDisliked: ['0']
+  }
+
     Post.create({
-      ...postObject,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      ...newObject,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     })
       .then(post => {
         const message = `Le post ${req.body.title} a bien été crée.`
@@ -93,7 +104,7 @@ exports.getAllPosts = (req, res) => {
       //   res.status(500)
       // })
       .then(posts => {
-        const message = 'La liste des pokémons a bien été récupérée.'
+        const message = 'La liste des posts a bien été récupérée.'
         res.status(200).json({ message, data: posts })
       })
       .catch(error => {

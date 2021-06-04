@@ -28,6 +28,7 @@ app
     .use(morgan('dev'))//URL en console
     .use(express.json())
 
+
 sequelize.initDb()
 
 //les points de terminaisons :
@@ -35,7 +36,7 @@ app.use('/api/post', postsRoutes)
 app.use('/api/auth', loginRoutes)
 
 // app.use('/images', express.static('images'))
-app.use(express.static(__dirname))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
   //Insomnia => Multer Erreur
   // app.use(function (err, req, res, next) {
