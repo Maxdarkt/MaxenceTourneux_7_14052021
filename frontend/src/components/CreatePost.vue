@@ -7,7 +7,7 @@
             <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
         </div>
         <div class="from-row">
-            <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="40" rows="8" required></textarea>
+            <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="30" rows="8" required></textarea>
         </div>
         <div class="from-row">
             <div v-if="!image">
@@ -15,18 +15,23 @@
             </div>
             <div v-else>
                 <img :src="image">
-                <button @click="removeImage">Remove image</button>
+                <button @click="removeImage">Supprimer l'image</button>
             </div>
         </div>
         <div class="form-row">
-            <button class="button" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="post()">Publier</button>
-            <button @click="test" class="button">test</button>
+            <button class="button" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
         </div>      
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
+const axios = require('axios')
+
+const instance = axios.create({
+    baseURL: 'http://localhost:3000/api/'
+})
 
 export default {
 
@@ -40,13 +45,12 @@ export default {
             title: '',
             description: '',
             image: '',
-            imageUrl: '',
-
+            FILE: '',
         }
     },
     computed: {
                 validatedFieldsPosts: function() {
-                if (this.title != "" && this.description != "" && this.imageUrl != "") {
+                if (this.title != "" && this.description != "" && this.FILE != "") {
                     return true;
                 } else {
                     return false;
@@ -54,43 +58,57 @@ export default {
         },
         ...mapState(['user'])
     },
+    created () {
+    instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+
+    },
     mounted () {      
         
     },
     methods: {
-        post: function() {
-
-            console.log(this.title +' - '+ this.description +' - '+ this.imageUrl)
-
+        onFileChange (e) {
+            this.FILE = e.target.files[0]
+            console.log('onChange :' + this.FILE +' - '+ this.FILE.name)
         },
-        test: function() {
-            console.log(this.image)
-        },
-        onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-            return;
-        this.createImage(files[0]);
-        },
-        createImage(file) {
-                this.filename(file.name)
-                var reader = new FileReader();
-                var vm = this;
+        async onSubmit() {
+            const body = new FormData()
+            body.append('image', this.FILE, this.FILE.name)
+            body.append('userId', this.$store.state.user.id)
+            body.append('username', this.$store.state.user.username)
+            body.append('title', this.title)
+            body.append('description', this.description)
 
-                reader.onload = (e) => {
-                vm.image = e.target.result;
-                }
+            console.log(body)
 
-                reader.readAsDataURL(file)
-                
-                
-        },
-        filename: function (imageUrl) {
-            this.imageUrl = imageUrl
+            await instance.post('post/', body)
+            .then(response => { 
+                    console.log(response)
+            })
+            .catch(error => console.log(error))
         },
         removeImage: function () {
         this.image = '';
-        }
+        },
+                // onFileChange_2(e) {
+        // var files = e.target.files || e.dataTransfer.files;
+        // if (!files.length)
+        //     return;
+        // //this.createImage(files[0]);
+        // this.selectedFile = files[0]
+        // console.log('SelectFile :' + this.selectedFile)
+        // },
+        // createImage(file) {
+        //         var reader = new FileReader();
+        //         var vm = this;
+
+        //         reader.onload = (e) => {
+        //         vm.image = e.target.result;
+        //         }
+
+        //         reader.readAsDataURL(file)
+                
+                
+        // },
 
     }
 }    
@@ -118,6 +136,7 @@ export default {
     margin-bottom: 10px;
     }
 }
+
 
 // .form-row{
 //     margin : 20px;

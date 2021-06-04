@@ -130,56 +130,55 @@ export default {
     }
 }
 
-  .form-row {
-    display: flex;
-    margin: 16px 0px;
-    gap:16px;
-    flex-wrap: wrap;
-      &__input, &__textarea {
-        width: 100%;  
-        padding:8px;
-        border: none;
-        border-radius: 8px;
-        background:#f2f2f2;
-        font-weight: 500;
-        font-size: 16px;
-        flex:1;
-        min-width: 100px;
-        color: black;
+.form-row {
+display: flex;
+margin: 16px 0px;
+gap:16px;
+flex-wrap: wrap;
+    &__input, &__textarea {
+    width: 100%;  
+    padding:8px;
+    border: none;
+    border-radius: 8px;
+    background:#f2f2f2;
+    font-weight: 500;
+    font-size: 16px;
+    flex:1;
+    min-width: 100px;
+    color: black;
     }
     &::placeholder {
         color:#aaaaaa;
     }
-  }
+}
 
-  .button{
-      color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      height: 50px;
-      width: 100%;
-      background-color: #0E6DB6;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      transition : all 400ms;
-      &:hover{
-          transform: scale(1.01);
-          background-color:#2884ca;
-          box-shadow: 0px 12px 7px #7a8085;
-      }
-      &--disabled{
-          background-color: rgb(148, 143, 143);
-          cursor: not-allowed;
-          &:hover{
-          transition:none;
-          background-color: rgb(148, 143, 143);
-          transform:none;
-          box-shadow: none;
-          }
-      }
-
-  }
+.button{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 50px;
+    width: 100%;
+    background-color: #0E6DB6;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition : all 400ms;
+    &:hover{
+        transform: scale(1.01);
+        background-color:#2884ca;
+        box-shadow: 0px 12px 7px #7a8085;
+    }
+    &--disabled{
+        background-color: rgb(148, 143, 143);
+        cursor: not-allowed;
+        &:hover{
+        transition:none;
+        background-color: rgb(148, 143, 143);
+        transform:none;
+        box-shadow: none;
+        }
+    }
+}
 
 
 </style>

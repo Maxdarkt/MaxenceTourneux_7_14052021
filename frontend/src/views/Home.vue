@@ -4,8 +4,8 @@
   <h1>Posts</h1>
   <div class="create-post">
     <div class="create-post__user">
-      <p class="new-post" @click="displayNewPost()" v-if="displayPost == 0">Publier un post</p>
-      <p class="new-post" @click="displayNewPost()" v-if="displayPost == 1">Annuler la création de post</p>
+      <button class="button button--1 new-post" @click="displayNewPost()" v-if="displayPost == 0">Publier un post</button>
+      <button class="button button--2 new-post" @click="displayNewPost()" v-if="displayPost == 1">Annuler la création de post</button>
     </div>
     <div v-if="displayPost == 1"> 
       <CreatePost />
@@ -83,10 +83,10 @@ export default {
   computed: {
     ...mapState(['user'])
   },
-  mounted () {
+  async mounted () {
       this.loading = true //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
-      instance.get('post/')
+      await instance.get('post/')
       .then(response => { 
         this.posts = response.data.data
         for(let item of response.data.data) {
@@ -164,13 +164,14 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../sass/_variables';
 
 .home{
   width: 100%;
   margin-top:150px;
 }
+
 .post{
   //background-color: rgb(209, 204, 204);
   padding: 10px;
@@ -205,27 +206,45 @@ export default {
     p{
       margin-right:10px;
     }
-  &__comments{
-    background-color: rgb(202, 198, 198);
-  }  
+    &__comments{
+      background-color: rgb(202, 198, 198);
+    }  
   }
-.like, .comments{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-right: 15px;
-  span{
-    margin-top:5px;
+  .like, .comments{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    span{
+      margin-top:5px;
+    }
+  }
+  .comments{
+    align-self: flex-end;
+    i{
+      cursor: pointer;
+    }
   }
 }
-.comments{
-  align-self: flex-end;
-  i{
-    cursor: pointer;
+.button{
+  &--1{
+      width: 50%;
+      background-color: #54aaec;
+      &:hover{
+        transform: scale(1.01);
+        background-color:#2884ca;
+        box-shadow: 0px 12px 7px #7a8085;
+      } 
   }
-}  
-
+  &--2{
+    width: 50%;
+    background-color: #ee5c5c; 
+    &:hover{
+      transform: scale(1.01);
+      background-color:#f16d6d;
+      box-shadow: 0px 12px 7px #7a8085;
+    }
+  }
 }
-
 </style>
