@@ -135,7 +135,8 @@ export default {
     margin: 16px 0px;
     gap:16px;
     flex-wrap: wrap;
-      &__input {
+      &__input, &__textarea {
+        width: 100%;  
         padding:8px;
         border: none;
         border-radius: 8px;

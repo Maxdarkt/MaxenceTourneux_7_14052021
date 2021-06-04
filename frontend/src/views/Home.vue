@@ -2,10 +2,28 @@
 <div class="home">
 
   <h1>Posts</h1>
+  <div class="create-post">
+    <div class="create-post__user">
+      <p class="new-post" @click="displayNewPost()" v-if="displayPost == 0">Publier un post</p>
+      <p class="new-post" @click="displayNewPost()" v-if="displayPost == 1">Annuler la création de post</p>
+    </div>
+    <div v-if="displayPost == 1"> 
+      <CreatePost />
+    </div>
+  </div>
   <div class="post" v-for="post in posts" :key="post">
     <div class="post__head">
-      <p>Username</p>
-      <p>time</p>
+      <div>
+        <p>{{post.username}}</p>
+      </div>
+      <div v-if="loading == false && time(post.created, post.id)">
+        <p v-if="timePost[post.id].year == 1">Il y a {{timePost[post.id].year}} an</p>
+        <p v-else-if="timePost[post.id].year > 1">Il y a {{timePost[post.id].year}} ans</p>
+        <p v-else-if="timePost[post.id].day == 1">Il y a {{timePost[post.id].day}} jour</p>
+        <p v-else-if="timePost[post.id].day > 1">Il y a {{timePost[post.id].day}} jours</p>
+        <p v-else-if="timePost[post.id].min == 1">Il y a {{timePost[post.id].min}} minute</p>
+        <p v-else-if="timePost[post.id].min > 1">Il y a {{timePost[post.id].min}} minutes</p>
+      </div>
     </div>
     <div class="post__title">
       <p>{{post.title}}</p>
@@ -30,6 +48,9 @@
 
 <script>
 import Comments from '../components/Comments'
+import CreatePost from '../components/CreatePost'
+
+import { mapState } from 'vuex'
 
 const axios = require('axios')
 
@@ -40,22 +61,30 @@ const instance = axios.create({
 export default {
   name: 'Home',
   components: {
-    Comments
+    Comments,
+    CreatePost
   },
   data() {
+  
     return {
       posts: [''],
       displayCom: [{"id": 0, "check": 0}],
       postId: 0,
       loading: true,
-      comments: []
+      comments: [],
+      timePost: [],
+      displayPost: 0
     }
   },
   created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+
+  },
+  computed: {
+    ...mapState(['user'])
   },
   mounted () {
-      this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
+      this.loading = true //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
       instance.get('post/')
       .then(response => { 
@@ -68,6 +97,7 @@ export default {
       .finally(() => {
         this.loading = false // On peut charger le composant
       });
+      
       
   },
   methods: {
@@ -88,12 +118,46 @@ export default {
       .then(response => { 
         // this.comments = response.data.data
         this.comments[postId] = response.data.data
-        console.log(this.comments)
         })
       .catch(error => { error })
       .finally(() => {
         this.loading = false // On peut charger le composant
       });
+    },
+    time: function (dateCreated, postId) {
+
+    let dateMysql = Date.parse(dateCreated)
+    let dateNow = Date.now()
+
+    var diff = {}                           // Initialisation du retour
+    var tmp = dateNow - dateMysql;
+ 
+    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+ 
+    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+ 
+    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+     
+    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+    diff.day = tmp;
+
+    tmp = Math.floor((tmp-diff.day)/365);   // Nombre de jours restants
+    diff.year = tmp;
+
+    this.timePost[postId] = diff
+
+    return this.timePost
+    },
+    displayNewPost: function(){
+      if(this.displayPost == 0) {
+        this.displayPost = 1
+
+      } else {
+        this.displayPost = 0
+      }
     }
   }
 }  
@@ -110,7 +174,8 @@ export default {
 .post{
   //background-color: rgb(209, 204, 204);
   padding: 10px;
-  border: 1px solid black;
+  border: 2px solid #BAD5EA;
+  border-radius: 15px;
   margin:20px;
   &__head{
     display: flex;
@@ -125,6 +190,7 @@ export default {
   }
   &__view{
     height:250px;
+    border-radius: 15px;
     background-position: center;
     background-size: cover;
   }

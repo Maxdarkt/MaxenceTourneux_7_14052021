@@ -31,9 +31,6 @@ const store = createStore({
             state.user.admin = data.data.admin,
             state.user.token = data.token,
             instance.defaults.headers.common['Authorization'] = 'Bearen ' + data.token
-            // console.log(data.data)
-            // console.log(data.token)
-            //console.log('Bearen :'+instance.defaults.headers.common['Authorization'])
         },
         userInfos: function (state, userInfos) {
             state.userInfos = userInfos
