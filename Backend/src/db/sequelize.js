@@ -25,6 +25,7 @@ const initDb = () => {
     Posts.map(post => {
       Post.create({
         userId: post.userId,
+        username: post.username,
         title: post.title,
         imageUrl: post.imageUrl,
         description: post.description,
@@ -39,6 +40,7 @@ const initDb = () => {
       Comment.create({
         id: comment.id,
         userId: comment.userId,
+        username: comment.username,
         postId: comment.postId,
         message: comment.message,
         usersLikedComment: comment.usersLikedComment,

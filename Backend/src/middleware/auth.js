@@ -3,7 +3,6 @@ const privateKey = require('../middleware/private_key')
   
 module.exports = (req, res, next) => {
   const authorizationHeader = req.headers.authorization
-  console.log('Controle du token :'+ req.headers.authorization)
   
   if(!authorizationHeader) {
     const message = `Vous n'avez pas fourni de jeton d'authentification. Ajoutez-en un dans l'en-tête de la requête.`

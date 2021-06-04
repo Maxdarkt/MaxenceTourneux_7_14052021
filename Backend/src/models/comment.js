@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "L'userId est une propriété requise." }
         }
       },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       postId: {
         type: DataTypes.INTEGER,
         allowNull: false,

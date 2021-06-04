@@ -2,6 +2,7 @@ const comments = [
     {
      id: 1,
      userId: 1,
+     username: "userAdmin",
      postId: 1,
      message: "Le chat est trop gros",
      usersLikedComment: [''],
@@ -13,6 +14,7 @@ const comments = [
     {
     id: 2,
     userId: 2,
+    username: "userTest",
     postId: 1,
     message: "Le chat a des gros Yeux",
     usersLikedComment: [''],
@@ -24,6 +26,7 @@ const comments = [
     {
     id: 3,
     userId: 3,
+    username: "userGuest",
     postId: 1,
     message: "Moi je préfère son chapeau",
     usersLikedComment: [''],
@@ -35,6 +38,7 @@ const comments = [
     {
     id: 4,
     userId: 1,
+    username: "userAdmin",
     postId: 2,
     message: "Winny ne changera jamais !",
     usersLikedComment: [''],
@@ -46,6 +50,7 @@ const comments = [
     {
     id: 5,
     userId: 1,
+    username: "userAdmin",
     postId: 2,
     message: "Du miel, du miel, encore du miel ...",
     usersLikedComment: [''],
@@ -57,6 +62,7 @@ const comments = [
     {
     id: 6,
     userId: 2,
+    username: "userTest",
     postId: 3,
     message: "C'est juste magnifique !",
     usersLikedComment: [''],
@@ -68,6 +74,7 @@ const comments = [
     {
     id: 7,
     userId: 1,
+    username: "userAdmin",
     postId: 3,
     message: "@Alfred, Et nous c'est pour quand ?",
     usersLikedComment: [''],
@@ -79,6 +86,7 @@ const comments = [
     {
     id: 8,
     userId: 3,
+    username: "userGuest",
     postId: 3,
     message: "J'espère que vous avez bien profité !!!",
     usersLikedComment: [''],
@@ -90,6 +98,7 @@ const comments = [
     {
     id: 9,
     userId: 2,
+    username: "userTest",
     postId: 4,
     message: "J'aime bien ce genre de cliché !",
     usersLikedComment: [''],
@@ -101,6 +110,7 @@ const comments = [
     {
     id: 10,
     userId: 1,
+    username: "userAdmin",
     postId: 4,
     message: "@user, tu as fait comment ?",
     usersLikedComment: [''],
@@ -112,6 +122,7 @@ const comments = [
     {
     id: 11,
     userId: 2,
+    username: "userTest",
     postId: 5,
     message: "L'article est très interessant !",
     usersLikedComment: [''],
@@ -123,6 +134,7 @@ const comments = [
     {
     id: 12,
     userId: 3,
+    username: "userGuest",
     postId: 5,
     message: "A lire ...",
     usersLikedComment: [''],
@@ -134,6 +146,7 @@ const comments = [
     {
     id: 13,
     userId: 2,
+    username: "userTest",
     postId: 5,
     message: "C'est encore un torchon !",
     usersLikedComment: [''],
@@ -145,6 +158,7 @@ const comments = [
     {
     id: 14,
     userId: 3,
+    username: "userGuest",
     postId: 6,
     message: "Juste Magnifique !!!",
     usersLikedComment: [''],
@@ -156,6 +170,7 @@ const comments = [
     {
     id: 15,
     userId: 1,
+    username: "userAdmin",
     postId: 6,
     message: "J'aurai aimé y être !!!'",
     usersLikedComment: [''],
