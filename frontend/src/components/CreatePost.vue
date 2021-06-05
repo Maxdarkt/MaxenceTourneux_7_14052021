@@ -26,6 +26,7 @@
 
 <script>
 import { mapState } from 'vuex'
+// import router from '../router/index'
 
 const axios = require('axios')
 
@@ -68,7 +69,10 @@ export default {
     methods: {
         onFileChange (e) {
             this.FILE = e.target.files[0]
-            console.log('onChange :' + this.FILE +' - '+ this.FILE.name)
+            var files = e.target.files|| e.dataTransfer.files //On récupère le fichier pour créer un aperçu
+                if (!files.length)
+                return;
+                this.createImage(files[0]); // appel de la fonction pour créer l'aperçu
         },
         async onSubmit() {
             const body = new FormData()
@@ -83,8 +87,20 @@ export default {
             await instance.post('post/', body)
             .then(response => { 
                     console.log(response)
+                    //this.ForceUpdate()
             })
             .catch(error => console.log(error))
+        },
+        createImage(file) {
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+            vm.image = e.target.result;
+            }
+
+            reader.readAsDataURL(file)
+        
         },
         removeImage: function () {
         this.image = '';
@@ -97,19 +113,6 @@ export default {
         // this.selectedFile = files[0]
         // console.log('SelectFile :' + this.selectedFile)
         // },
-        // createImage(file) {
-        //         var reader = new FileReader();
-        //         var vm = this;
-
-        //         reader.onload = (e) => {
-        //         vm.image = e.target.result;
-        //         }
-
-        //         reader.readAsDataURL(file)
-                
-                
-        // },
-
     }
 }    
 </script>

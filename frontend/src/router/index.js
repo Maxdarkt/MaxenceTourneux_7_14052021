@@ -60,11 +60,9 @@ const router = createRouter({
   routes
 })
 
-router.afterEach((to, from) => {
-  console.log(from, to)
+router.afterEach((to) => {
   document.title = to.meta.title;
 })
-
 
 
 export default router
