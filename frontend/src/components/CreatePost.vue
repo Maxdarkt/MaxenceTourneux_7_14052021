@@ -63,9 +63,6 @@ export default {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
     },
-    mounted () {      
-        
-    },
     methods: {
         onFileChange (e) {
             this.FILE = e.target.files[0]
@@ -82,14 +79,14 @@ export default {
             body.append('title', this.title)
             body.append('description', this.description)
 
-            console.log(body)
-
             await instance.post('post/', body)
-            .then(response => { 
-                    console.log(response)
-                    //this.ForceUpdate()
+            .then(() => { 
+                    this.$emit('eventPost')
             })
             .catch(error => console.log(error))
+        },
+        sendNewPost() {
+            
         },
         createImage(file) {
             var reader = new FileReader();
