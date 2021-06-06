@@ -11,7 +11,7 @@
       <CreatePost />
     </div>
   </div>
-  <div class="post" v-for="post in posts" :key="post">
+    <div class="post" v-for="post in posts" :key="post">
     <div class="post__head">
       <div>
         <p>{{post.username}}</p>
@@ -39,16 +39,16 @@
       <p class="comments"><i @click="displayComments(post.id), loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
     </div>
     <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom" :comments="comments"/>
-    
-    
   </div>
+
 </div>
 
 </template>
 
 <script>
-import Comments from '../components/Comments'
+
 import CreatePost from '../components/CreatePost'
+import Comments from '../components/Comments.vue'
 
 import { mapState } from 'vuex'
 
@@ -61,19 +61,19 @@ const instance = axios.create({
 export default {
   name: 'Home',
   components: {
-    Comments,
-    CreatePost
+    CreatePost,
+    Comments
   },
   data() {
   
     return {
-      posts: [''],
-      displayCom: [{"id": 0, "check": 0}],
-      postId: 0,
-      loading: true,
-      comments: [],
-      timePost: [],
-      displayPost: 0
+    posts: [''],
+    displayCom: [{"id": 0, "check": 0}],
+    postId: 0,
+    loading: true,
+    comments: [],
+    timePost: [],
+    displayPost: 0
     }
   },
   created () {
@@ -84,72 +84,74 @@ export default {
     ...mapState(['user'])
   },
   async mounted () {
-      this.loading = true //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
+    this.loading = true //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
-      await instance.get('post/')
-      .then(response => { 
+    await instance.get('post/')
+    .then(response => { 
         this.posts = response.data.data
         for(let item of response.data.data) {
-          this.displayCom[item.id] = ({"id" : item.id, "check" : 0})
+        this.displayCom[item.id] = ({"id" : item.id, "check" : 0})
         }
         })
-      .catch(error => { error })
-      .finally(() => {
+    .catch(error => { error })
+    .finally(() => {
         this.loading = false // On peut charger le composant
-      });
-      
-      
+    });
   },
   methods: {
     displayComments: function(postId){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
+    console.log('displayComments reçoit : '+ postId)
       for (let item of this.displayCom) {
+
         if(this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 0){
-          return this.displayCom[item.id] = ({"id" : postId, "check" : 1})
+            this.displayCom[item.id] = ({"id" : postId, "check" : 1})
+            //console.log(this.displayCom[item.id])
         } else if (this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 1){
-          return this.displayCom[item.id] = ({"id" : postId, "check" : 0})
+            this.displayCom[item.id] = ({"id" : postId, "check" : 0})
+            //console.log(this.displayCom[item.id])
         }
       }
+      //console.log(this.displayCom)
     },
     loadComments: function(postId){
-      console.log(postId)
+      //console.log('loadComments :' +postId)
       this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
       instance.get('post/'+ postId +'/comments/' )
       .then(response => { 
-        // this.comments = response.data.data
-        this.comments[postId] = response.data.data
-        })
+          this.comments[postId] = response.data.data
+          })
       .catch(error => { error })
       .finally(() => {
-        this.loading = false // On peut charger le composant
+          this.loading = false // On peut charger le composant
       });
     },
     time: function (dateCreated, postId) {
 
-    let dateMysql = Date.parse(dateCreated)
-    let dateNow = Date.now()
+        let dateMysql = Date.parse(dateCreated)
+        let dateNow = Date.now()
 
-    var diff = {}                           // Initialisation du retour
-    var tmp = dateNow - dateMysql;
- 
-    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
- 
-    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-    diff.min = tmp % 60;                    // Extraction du nombre de minutes
- 
-    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-     
-    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
-    diff.day = tmp;
+        var diff = {}                           // Initialisation du retour
+        var tmp = dateNow - dateMysql;
+    
+        tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+        diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+    
+        tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+        diff.min = tmp % 60;                    // Extraction du nombre de minutes
+    
+        tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+        diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+        
+        tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+        diff.day = tmp;
 
-    tmp = Math.floor((tmp-diff.day)/365);   // Nombre de jours restants
-    diff.year = tmp;
+        tmp = Math.floor((tmp-diff.day)/365);   // Nombre de jours restants
+        diff.year = tmp;
 
-    this.timePost[postId] = diff
+        this.timePost[postId] = diff
 
-    return this.timePost
+        return this.timePost
     },
     displayNewPost: function(){
       if(this.displayPost == 0) {
