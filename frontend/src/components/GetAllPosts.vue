@@ -1,4 +1,5 @@
 <template>
+<div>
 <div class="post" v-for="post in posts" :key="post">
     <div class="post__head">
       <div>
@@ -21,13 +22,21 @@
     <div class="post__description">
       <p>{{post.description}}</p>
     </div>
-    <div class="post__foot">
-      <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
-      <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
-      <p class="comments"><i @click="displayComments(post.id), loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
+    <div class="post__cont">
+        <div class="post__cont__foot">
+            <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
+            <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
+            <p class="comments"><i @click="displayComments(post.id), loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
+        </div>
+        <div class="post__cont__action">
+            <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)" >Modifier</button>
+            <button class="button button--red" v-if="user.id == post.userId || user.admin == true">Supprimer</button>
+        </div>
     </div>
     <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom" :comments="comments"/>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -134,6 +143,12 @@ export default {
 
             return this.timePost
         },
+        modifyPost(postId){
+            this.$emit('eventModify', {
+                modifyPostId: postId
+            })
+            console.log('emit: '+postId)
+        }
     }
 } 
 </script>
@@ -169,31 +184,46 @@ export default {
     justify-content: flex-start;
     text-align: justify;
   }
-  &__foot{
+  &__cont{
     display: flex;
-    justify-content: flex-start;
-    p{
-      margin-right:10px;
+    justify-content: space-between;
+    align-items: center;  
+        &__foot{  
+                display: flex;
+                justify-content: flex-start;
+            p{
+                margin-right:10px;
+            }
+            &__comments{
+                background-color: rgb(202, 198, 198);
+            }    
+        }
+        &__action{
+            width: 350px;  
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            .button{
+                width: 150px;
+            }
+        } 
+   
     }
-    &__comments{
-      background-color: rgb(202, 198, 198);
-    }  
-  }
-  .like, .comments{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    span{
-      margin-top:5px;
+    .like, .comments{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        span{
+            margin-top:5px;
+        }
     }
-  }
-  .comments{
-    align-self: flex-end;
-    i{
-      cursor: pointer;
+    .comments{
+        align-self: flex-end;
+        i{
+            cursor: pointer;
+        }
     }
-  }
 }
 </style>

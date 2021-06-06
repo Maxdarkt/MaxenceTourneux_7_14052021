@@ -21,11 +21,11 @@
                 Adresse mail déjà utilisée
             </div>
             <div class="form-row">
-                <button class="button" @click="login()" :class="{ 'button--disabled' : !validatedFields}" v-if="mode == 'login'">
+                <button class="button button--blue" @click="login()" :class="{ 'button--disabled' : !validatedFields}" v-if="mode == 'login'">
                    <span v-if="status == 'loading'">Connexion en cours ...</span> 
                    <span v-else>Connexion</span> 
                 </button>
-                <button class="button" @click="createAccount()" :class="{ 'button--disabled' : !validatedFields}" v-else>
+                <button class="button button--blue" @click="createAccount()" :class="{ 'button--disabled' : !validatedFields}" v-else>
                     <span v-if="status == 'loading'">Création en cours ...</span> 
                     <span v-else>Créer mon compte</span> 
                 </button>  
@@ -107,24 +107,25 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../sass/_variables';
 
 .container-card{
-    background-color:#0E6DB6;
-    min-height:100vh;
+    background-color: $color-bg-primary;
+    min-height: 100vh;
     width: 100%;
     margin-top: 80px;
-    padding-top:100px;
+    padding-top: 100px;
     display: flex;
     justify-content: center;
 }
 .card{
-    width:400px;
+    width: 400px;
     height: 350px;
-    background-color: #BAD5EA;
+    background-color: $color-bg-secondary;
     border-radius: 10px;
     padding:15px;
     &__action{
-        color: #0E6DB6;
+        color: $color-bg-primary;
         text-decoration-line: underline;
         cursor: pointer;
     }
@@ -136,7 +137,7 @@ margin: 16px 0px;
 gap:16px;
 flex-wrap: wrap;
     &__input, &__textarea {
-    width: 100%;  
+    width: 95%;  
     padding:8px;
     border: none;
     border-radius: 8px;
@@ -149,34 +150,6 @@ flex-wrap: wrap;
     }
     &::placeholder {
         color:#aaaaaa;
-    }
-}
-
-.button{
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    height: 50px;
-    width: 100%;
-    background-color: #0E6DB6;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition : all 400ms;
-    &:hover{
-        transform: scale(1.01);
-        background-color:#2884ca;
-        box-shadow: 0px 12px 7px #7a8085;
-    }
-    &--disabled{
-        background-color: rgb(148, 143, 143);
-        cursor: not-allowed;
-        &:hover{
-        transition:none;
-        background-color: rgb(148, 143, 143);
-        transform:none;
-        box-shadow: none;
-        }
     }
 }
 

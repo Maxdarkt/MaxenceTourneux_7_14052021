@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="form-row">
-            <button class="button" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
+            <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
         </div>      
     </div>
 </template>
@@ -85,9 +85,6 @@ export default {
             })
             .catch(error => console.log(error))
         },
-        sendNewPost() {
-            
-        },
         createImage(file) {
             var reader = new FileReader();
             var vm = this;
@@ -102,14 +99,6 @@ export default {
         removeImage: function () {
         this.image = '';
         },
-                // onFileChange_2(e) {
-        // var files = e.target.files || e.dataTransfer.files;
-        // if (!files.length)
-        //     return;
-        // //this.createImage(files[0]);
-        // this.selectedFile = files[0]
-        // console.log('SelectFile :' + this.selectedFile)
-        // },
     }
 }    
 </script>
@@ -137,19 +126,5 @@ export default {
     }
 }
 
-
-// .form-row{
-//     margin : 20px;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     label{
-//         display: flex;
-//         justify-content: flex-start;
-//     }
-//     input{
-
-//     }
-// }
 
 </style>

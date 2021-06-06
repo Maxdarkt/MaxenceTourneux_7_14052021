@@ -16,10 +16,10 @@
       </div>
       
       <div class="form-row">
-        <button @click="logout()" class="button">Déconnexion</button>
+        <button @click="logout()" class="button button--blue">Déconnexion</button>
       </div>
       <div class="form-row">
-        <button @click="deleteAccount()" class="button delete">Supprimer mon compte</button>
+        <button @click="deleteAccount()" class="button button--red">Supprimer mon compte</button>
       </div>
     </div>
 </div>
@@ -87,7 +87,6 @@ export default {
   }
   p{
     width: 100%;
-    border: 1px solid black;
     display: flex;
     justify-content: flex-start;
   }
@@ -96,8 +95,5 @@ export default {
     height:100%;
     border: 1px solid grey;
   }
-}
-.delete{
-  background-color: rgb(219, 82, 82);
 }
 </style>
