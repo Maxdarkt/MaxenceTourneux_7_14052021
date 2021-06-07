@@ -98,8 +98,6 @@ export default {
                 body.append('title', this.title)
                 body.append('description', this.description)
 
-                
-
                 await instance.put('post/'+postId, body)
                 .then(() => {
                     this.$emit('eventModified')

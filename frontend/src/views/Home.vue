@@ -12,7 +12,7 @@
     </div>
   </div>
   <div> 
-    <GetAllsPots :key="newPostCreated" @eventModify="newModifyPost"/>
+    <GetAllsPots :key="refreshPosts" @eventModify="newModifyPost" @eventDelete="newDeletePost" />
   </div>
   <div v-if="openOrCloseModifyPost == 1">
     <ModifyPost @eventClose="closePost" @eventModified="newModifiedPost" :postId="modifyPostId" />
@@ -46,7 +46,7 @@ export default {
   
     return {
     displayPost: 0,
-    newPostCreated: 0,
+    refreshPosts: 0,
     post: '',
     modifyPostId: '',
     openOrCloseModifyPost: 0
@@ -72,7 +72,7 @@ export default {
       console.log('after :'+ this.displayPost)
     },
     newPost: function (){
-      this.newPostCreated ++
+      this.refreshPosts ++
       this.displayPost = 0
     },
     newModifyPost: function (payload) {
@@ -89,9 +89,12 @@ export default {
       this.openOrCloseModifyPost = 0
     },
     newModifiedPost: function() {
-      console.log("emit <=> event")
-      this.newPostCreated ++
+      this.refreshPosts ++
       this.openOrCloseModifyPost = 0
+    },
+    newDeletePost: function() {
+      console.log("delete : emit <=> event")
+      this.refreshPosts ++
     }
   }
 }  

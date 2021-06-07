@@ -30,7 +30,7 @@
         </div>
         <div class="post__cont__action">
             <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)" >Modifier</button>
-            <button class="button button--red" v-if="user.id == post.userId || user.admin == true">Supprimer</button>
+            <button class="button button--red" v-if="user.id == post.userId || user.admin == true" @click="deletePost(post.id)" >Supprimer</button>
         </div>
     </div>
     <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom" :comments="comments"/>
@@ -104,7 +104,6 @@ export default {
             //console.log(this.displayCom)
         },
         loadComments: function(postId){
-            //console.log('loadComments :' +postId)
             this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
             instance.get('post/'+ postId +'/comments/' )
@@ -147,7 +146,17 @@ export default {
             this.$emit('eventModify', {
                 modifyPostId: postId
             })
-            console.log('emit: '+postId)
+        },
+        deletePost(postId){
+            if(confirm('Confirmez-vous la suppression de ce post ?')){
+            instance.delete('post/'+ postId)
+            .then(() => { 
+                this.$emit('eventDelete')
+            })
+            .catch(error => { error })
+            } else {
+                return
+            }
         }
     }
 } 
