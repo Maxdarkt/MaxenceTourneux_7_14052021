@@ -148,14 +148,6 @@ exports.getAllPosts = (req, res) => {
       })
     } else {
       Post.findAll({ order: [['created', 'DESC']]})//Tri ASC
-      // .then(posts => {
-      //   console.log('GETAllPosts :' + posts)
-      //   res.status(200).json({ posts })
-      // })
-      // .catch(function(error) {
-      //   console.log(error)
-      //   res.status(500)
-      // })
       .then(posts => {
         const message = 'La liste des posts a bien été récupérée.'
         res.status(200).json({ message, data: posts })
@@ -193,13 +185,22 @@ exports.deletePost = (req, res) => {
 
       const postDeleted = post;
 
-      return Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
-        where: { id: post.id }//...pour éviter de taper 2 même blocs de code
-      })
-      .then(_ => {
-        const message = `Le pokémon avec l'identifiant n°${postDeleted.id} a bien été supprimé.`
-        res.json({message, data: postDeleted })
-      })
+      const filename = postDeleted.imageUrl.split('/images/')[1];
+      fs.unlink(`src/images/${filename}`, (error)=> {
+        if(error){
+          console.log(error)
+          throw error;
+        }
+
+        Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
+          where: { id: post.id }//...pour éviter de taper 2 même blocs de code
+        })
+        .then(_ => {
+          const message = `Le pokémon avec l'identifiant n°${postDeleted.id} a bien été supprimé.`
+          res.json({message, data: postDeleted })
+        })
+        .catch(error => console.log(error) )
+      }) 
     })
     .catch(error => {
       const message = `Le post n'a pas pu être supprimé. Réessayez dans quelques instants.`
