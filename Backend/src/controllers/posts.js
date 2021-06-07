@@ -80,14 +80,7 @@ exports.modifyPost = (req, res) => {
         res.status(500).json({ message, data: error})
       })
     } else {
-      const reqObject = req.body
 
-      var newObject = {
-        userId: reqObject.userId,
-        username: reqObject.username,
-        title: reqObject.title,
-        description: reqObject.description,
-      }
       Post.findByPk(id)
       .then(post => {
         if(post === null){
@@ -96,30 +89,37 @@ exports.modifyPost = (req, res) => {
         }
 
         const postObject = post.dataValues
-  
-        Post.update({
-          ...post.dataValues,
-          username: req.body.username,
-          title: req.body.title,
-          description: req.body.description,
-          usersLiked: postObject.usersLiked,
-          usersDisliked: postObject.usersDisliked,
-          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        }, { where: { id: id } })
-        .then((post) => {
-          const message = `Le post ${post.title} a bien été modifié.`
-          res.status(200).json({message, data: post })
-        })
-        .catch(error => {
-          res.status(400).json({ error })
-          console.log({ error })
-        })
+
+        const filename = postObject.imageUrl.split('/images/')[1];
+        fs.unlink(`src/images/${filename}`, (error)=> {
+          if(error){
+            throw error;
+          }
+
+          Post.update({
+            ...post.dataValues,
+            username: req.body.username,
+            title: req.body.title,
+            description: req.body.description,
+            usersLiked: postObject.usersLiked,
+            usersDisliked: postObject.usersDisliked,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+          }, { where: { id: id } })
+          .then((post) => {
+            const message = `Le post ${post.title} a bien été modifié.`
+            res.status(200).json({message, data: post })
+          })
+          .catch(error => {
+            res.status(400).json({ error })
+            console.log({ error })
+          })
+        })  
       })
       .catch(error => {
         const message = `Le post n'a pas pu être modifié. Réessayez dans quelques instants.`
         res.status(500).json({ message, data: error})
       })
-    }  
+    }   
 } 
 
 exports.getAllPosts = (req, res) => {
