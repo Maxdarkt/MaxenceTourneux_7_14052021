@@ -28,24 +28,16 @@ app
     .use(morgan('dev'))//URL en console
     .use(express.json())
 
+//routes
+app.use('/images', express.static(path.join(__dirname, '/src/images')));
 
-sequelize.initDb()
+// app.use(express.static('images'))
+//sequelize.initDb()
 
 //les points de terminaisons :
 app.use('/api/post', postsRoutes)
 app.use('/api/auth', loginRoutes)
 
-// app.use('/images', express.static('images'))
-app.use('/images', express.static(path.join(__dirname, 'images')))
-
-  //Insomnia => Multer Erreur
-  // app.use(function (err, req, res, next) {
-  //   console.log('This is the invalid field ->', err.field)
-  //   next(err)
-  // })
-
-//routes
-// app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //On ajoute la gestion des erreurs 404
 app.use(({ res }) => {

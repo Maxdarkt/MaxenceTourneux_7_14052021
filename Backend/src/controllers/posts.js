@@ -2,6 +2,7 @@ const { Post } = require('../db/sequelize')
 const { ValidationError, UniqueConstraintError } = require('sequelize')
 const { Op } = require('sequelize')
 const { response } = require('express')
+const fs = require('fs')
   
 
 exports.createPost = (req, res) => {
@@ -9,16 +10,16 @@ exports.createPost = (req, res) => {
   //donc il faudra utliser JSON.parse(req.body."post")
   //const postObject = JSON.parse(req.body)
   const postObject = req.body
-  console.log(req.file.filename)
+  console.log('nom multer config :' + req.file.filename)
   var newObject = {
     userId: postObject.userId,
     username: postObject.username,
     title: postObject.title,
     description: postObject.description,
-    usersLiked: ['0'],
-    usersDisliked: ['0'],
-    userIdLiked: ['0'],
-    userIdDisliked: ['0']
+    usersLiked: '0',
+    usersDisliked: '0',
+    userIdLiked: '0',
+    userIdDisliked: '0'
   }
 
     Post.create({
@@ -45,28 +46,80 @@ exports.modifyPost = (req, res) => {
     //récupérer requete au format form/data pour envoyer fichier
   //donc il faudra utliser JSON.parse(req.body."thing")
     const id = req.params.id
-    Post.update(req.body, {
-      where: { id: id }
-    })
-    .then(_ => {
-      return Post.findByPk(id) //return est là pour éviter 2 catch
+    if(!req.file){
+      Post.findByPk(id)
+      .then(post => {
+        if(post === null){
+          const message = `Le post demandé n'exsite pas. Réessayez avec un autre identifiant.`
+          return res.status(404).json({ message })
+        }
+        const postObject = post.dataValues
+  
+        Post.update({
+          ...post.dataValues,
+          username: req.body.post.username,
+          title: req.body.post.title,
+          description: req.body.post.description,
+          usersLiked: postObject.usersLiked,
+          usersDisliked: postObject.usersDisliked
+        }, { where: { id: id } })
+        .then((post) => {
+          const message = `Le post ${post.title} a bien été modifié.`
+          res.status(200).json({message, data: post })
+        })
+        .catch(error => {
+          res.status(400).json({ error })
+          console.log({ error })
+        })
+      })
+      .catch(error => {
+        if (error instanceof ValidationError) {
+          return res.status(400).json({ message: error.message, data: error })
+        }
+        const message = `Le post n'a pas pu être modifié. Réessayez dans quelques instants.`
+        res.status(500).json({ message, data: error})
+      })
+    } else {
+      const reqObject = req.body
+
+      var newObject = {
+        userId: reqObject.userId,
+        username: reqObject.username,
+        title: reqObject.title,
+        description: reqObject.description,
+      }
+      Post.findByPk(id)
       .then(post => {
         if(post === null){
           const message = `Le post demandé n'exsite pas. Réessayez avec un autre identifiant.`
           return res.status(404).json({ message })
         }
 
-        const message = `Le pokémon ${post.name} a bien été modifié.`
-        res.json({message, data: post })
+        const postObject = post.dataValues
+  
+        Post.update({
+          ...post.dataValues,
+          username: req.body.username,
+          title: req.body.title,
+          description: req.body.description,
+          usersLiked: postObject.usersLiked,
+          usersDisliked: postObject.usersDisliked,
+          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }, { where: { id: id } })
+        .then((post) => {
+          const message = `Le post ${post.title} a bien été modifié.`
+          res.status(200).json({message, data: post })
+        })
+        .catch(error => {
+          res.status(400).json({ error })
+          console.log({ error })
+        })
       })
-    })
-    .catch(error => {
-      if (error instanceof ValidationError) {
-        return res.status(400).json({ message: error.message, data: error })
-      }
-      const message = `Le post n'a pas pu être modifié. Réessayez dans quelques instants.`
-      res.status(500).json({ message, data: error})
-    })
+      .catch(error => {
+        const message = `Le post n'a pas pu être modifié. Réessayez dans quelques instants.`
+        res.status(500).json({ message, data: error})
+      })
+    }  
 } 
 
 exports.getAllPosts = (req, res) => {
