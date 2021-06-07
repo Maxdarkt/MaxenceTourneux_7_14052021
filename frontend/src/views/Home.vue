@@ -15,7 +15,7 @@
     <GetAllsPots :key="newPostCreated" @eventModify="newModifyPost"/>
   </div>
   <div v-if="openOrCloseModifyPost == 1">
-    <ModifyPost @eventClose="closePost"/>
+    <ModifyPost @eventClose="closePost" @eventModified="newModifiedPost" :postId="modifyPostId" />
   </div>
 </div>
 
@@ -83,8 +83,14 @@ export default {
         this.openOrCloseModifyPost = 0
       }
       console.log('openOrCloseModifyPost: '+ this.openOrCloseModifyPost)
+      console.log('modifyPostId: '+ this.modifyPostId)
     },
     closePost: function() {
+      this.openOrCloseModifyPost = 0
+    },
+    newModifiedPost: function() {
+      console.log("emit <=> event")
+      this.newPostCreated ++
       this.openOrCloseModifyPost = 0
     }
   }

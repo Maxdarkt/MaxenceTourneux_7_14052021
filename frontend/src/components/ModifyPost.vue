@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="form-row">
-                <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onModify">Modifier</button>
+                <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts }" @click="onModify(postId)">Modifier</button>
             </div>  
         </div>
     </div>
@@ -58,6 +58,10 @@ export default {
             FILE: '',
         }
     },
+    props:{
+        postId: Number
+        
+    },
     computed: {
                 validatedFieldsPosts: function() {
                 if (this.title != "" && this.description != "") {
@@ -75,29 +79,50 @@ export default {
     methods: {
         closeModifyPost: function() {
             this.$emit('eventClose')
-            console.log('close')
 
         },
         onFileChange (e) {
-            this.FILE = e.target.files[0]
             var files = e.target.files|| e.dataTransfer.files //On récupère le fichier pour créer un aperçu
+            this.FILE = files[0]
                 if (!files.length)
                 return;
                 this.createImage(files[0]); // appel de la fonction pour créer l'aperçu
         },
-        async onModify() {
-            // const body = new FormData()
-            // body.append('image', this.FILE, this.FILE.name)
-            // body.append('userId', this.$store.state.user.id)
-            // body.append('username', this.$store.state.user.username)
-            // body.append('title', this.title)
-            // body.append('description', this.description)
+        async onModify(postId) {
+            
+            if(this.FILE){//Si image = formData
+                const body = new FormData()
+                body.append('image', this.FILE, this.FILE.name)
+                body.append('userId', this.$store.state.user.id)
+                body.append('username', this.$store.state.user.username)
+                body.append('title', this.title)
+                body.append('description', this.description)
 
-            // await instance.put('post/', body)
-            // .then(() => { 
-            //         this.$emit('eventPost')
-            // })
-            // .catch(error => console.log(error))
+                
+
+                await instance.put('post/'+postId, body)
+                .then(() => {
+                    this.$emit('eventModified')
+                })
+                .catch(error => console.log(error))
+
+            } else {//Sinon JSON
+                const body = {
+                userId: this.$store.state.user.id,
+                username: this.$store.state.user.username,
+                title: this.title,
+                description: this.description
+                }
+
+                await instance.put('post/'+postId, {
+                    post: body})
+                .then(() => {
+                    this.$emit('eventModified')
+                })
+                .catch(error => console.log(error))
+
+            }
+        this.FILE = ''    
         },
         createImage(file) {
             var reader = new FileReader();
@@ -112,6 +137,7 @@ export default {
         },
         removeImage: function () {
         this.FILE = '';
+        this.image = ''
         },
     }
 }
