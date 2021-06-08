@@ -36,22 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       usersLikedComment: {
         type: DataTypes.STRING,
         allowNull: false,
-        get() {
-          return this.getDataValue('usersLikedComment').split(',')
-        },
-        set(usersLikedComment){
-          return this.setDataValue('usersLikedComment', usersLikedComment.join())
-        }
       },
       usersDislikedComment: {
         type: DataTypes.STRING,
         allowNull: false,
-        get() {
-          return this.getDataValue('usersDislikedComment').split(',')
-        },
-        set(usersDislikedComment){
-          return this.setDataValue('usersDislikedComment', usersDislikedComment.join())
-        }
       },
       userIdLikedComment: {
         type: DataTypes.INTEGER,

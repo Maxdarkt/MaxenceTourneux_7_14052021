@@ -196,10 +196,10 @@ exports.deletePost = (req, res) => {
           where: { id: post.id }//...pour éviter de taper 2 même blocs de code
         })
         .then(_ => {
-          const message = `Le pokémon avec l'identifiant n°${postDeleted.id} a bien été supprimé.`
+          const message = `Le post avec l'identifiant n°${postDeleted.id} a bien été supprimé.`
           res.json({message, data: postDeleted })
         })
-        .catch(error => console.log(error) )
+        .catch(error => res.status(500).json({ error }))
       }) 
     })
     .catch(error => {

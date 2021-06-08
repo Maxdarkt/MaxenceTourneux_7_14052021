@@ -4,9 +4,10 @@ const { ValidationError } = require('sequelize')
 exports.createComment = (req, res) => {
 
     console.log(req.params.id)
+    console.log(req.body.comment)
 
       Comment.create({
-        ...req.body
+        ...req.body.comment
       })
         .then(post => {
           const message = `Le commentaire a bien été crée.`
@@ -32,4 +33,19 @@ console.log(req.params.id)
         const message = `La liste des commentaires n'a pas pu être récupérée. Réessayez dans quelques instants.`
         res.status(500).json({ message, data: error})
     })
+}
+
+exports.deleteCommentByPostId = (req, res) => {
+  console.log(req.params.id)
+  Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
+    where: { id: req.params.id }//...pour éviter de taper 2 même blocs de code
+  })
+  .then(() => {
+    const message = `Le post a bien été supprimé.`
+    res.status(200).json({ message })
+  })
+  .catch(error => {
+    res.status(500).json({error})
+    console.log(error)
+  })
 }
