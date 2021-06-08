@@ -50,18 +50,17 @@ export default {
         }
     },
     computed: {
-                validatedFieldsPosts: function() {
-                if (this.title != "" && this.description != "" && this.FILE != "") {
-                    return true;
-                } else {
-                    return false;
-                }
+        validatedFieldsPosts: function() {
+            if (this.title != "" && this.description != "" && this.FILE != "") {
+                return true;
+            } else {
+                return false;
+            }
         },
         ...mapState(['user'])
     },
     created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
-
     },
     methods: {
         onFileChange (e) {

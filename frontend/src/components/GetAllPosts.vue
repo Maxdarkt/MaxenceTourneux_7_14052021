@@ -26,14 +26,16 @@
         <div class="post__cont__foot">
             <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
             <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
-            <p class="comments"><i @click="displayComments(post.id), loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
+            <p class="comments"><i @click="loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
         </div>
         <div class="post__cont__action">
             <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)" >Modifier</button>
             <button class="button button--red" v-if="user.id == post.userId || user.admin == true" @click="deletePost(post.id)" >Supprimer</button>
         </div>
     </div>
-    <Comments v-if="loading == false" :postId="post.id" :displayCom="displayCom" :comments="comments"/>
+    <!-- <Comments v-if="Object.keys(openComs).includes(post.id)" :postId="post.id" :displayCom="displayCom" :comments="comments"/> -->
+    <!-- v-if="displayCom[postId].id == postId && displayCom[postId].check == 1" -->
+    <Comments v-if="loading== false && displayCom[post.id].id == post.id && displayCom[post.id].check == 1" :comments="comments" :postId="post.id" />
   </div>
 </div>
 
@@ -58,11 +60,12 @@ export default {
 
         return {
             posts: [''],
-            displayCom: [{"id": 0, "check": 0}],
+            displayCom: [],
             postId: 0,
             loading: true,
             comments: [],
             timePost: [],
+            openComs: []
 
         }
     },
@@ -76,10 +79,10 @@ export default {
         await instance.get('post/')
         .then(response => { 
             this.posts = response.data.data
-            for(let item of response.data.data) {
-            this.displayCom[item.id] = ({"id" : item.id, "check" : 0})
+            for(let i in this.posts) {
+            this.displayCom[this.posts[i].id] = ({"id" : this.posts[i].id, "check" : 0})
             }
-            })
+        })
         .catch(error => { error })
         .finally(() => {
             this.loading = false // On peut charger le composant
@@ -90,21 +93,15 @@ export default {
     },
     methods: {
         displayComments: function(postId){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
-            console.log('displayComments reçoit : '+ postId)
-            for (let item of this.displayCom) {
-
-                if(this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 0){
-                    this.displayCom[item.id] = ({"id" : postId, "check" : 1})
-                    //console.log(this.displayCom[item.id])
-                } else if (this.displayCom[item.id].id == postId && this.displayCom[item.id].check == 1){
-                    this.displayCom[item.id] = ({"id" : postId, "check" : 0})
-                    //console.log(this.displayCom[item.id])
+            // console.log('displayComments reçoit : '+ postId)
+                if(this.displayCom[postId].id == postId && this.displayCom[postId].check == 0){
+                    this.displayCom[postId] = ({"id" : postId, "check" : 1})
+                } else if (this.displayCom[postId].id == postId && this.displayCom[postId].check == 1){
+                    this.displayCom[postId] = ({"id" : postId, "check" : 0})
                 }
-            }
-            //console.log(this.displayCom)
         },
         loadComments: function(postId){
-            this.loading = true; //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
+            // console.log('loadComments :' + postId)
 
             instance.get('post/'+ postId +'/comments/' )
             .then(response => { 
@@ -112,7 +109,7 @@ export default {
                 })
             .catch(error => { error })
             .finally(() => {
-                this.loading = false // On peut charger le composant
+                this.displayComments(postId)
             });
         },
         time: function (dateCreated, postId) {
