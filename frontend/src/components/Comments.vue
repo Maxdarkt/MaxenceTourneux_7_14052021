@@ -18,7 +18,7 @@
                         {{ comment.message}}
                     </td>
                     <td class="col-3">
-                        <button v-if="comment.userId == user.id || user.admin == true" class="button button--red button--comment" @click="deleteComment(comment.id)" ><i class="fas fa-ban"></i></button>
+                        <button v-if="comment.userId == user.id || user.admin == true" class="button button--red button--comment" @click="deleteComment(comment.id, comment.postId)" ><i class="fas fa-ban"></i></button>
                     </td>
                 </tr>
             </table>
@@ -61,7 +61,8 @@ export default {
     },
     props: {
         postId : Number,
-        comments: Array
+        comments: Array,
+        numberOfComments: Array
     },
     computed:{
         validatedFieldsComments: function() {
@@ -77,7 +78,7 @@ export default {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
     },
     methods:{
-        onSubmitComment: function (postId) {
+        onSubmitComment(postId) {
             if(!this.message){
                 return
             }
@@ -93,27 +94,56 @@ export default {
             userIdDislikedComment: '0',
 
             }
-            console.log(body)
 
             instance.post('post/'+postId+'/comment', {
                 comment: body})
             .then(() => {
                 this.$emit('eventRefreshCom')
+                this.refreshNumberOfComments(postId, 1)
             })
             .catch(error => console.log(error))
 
 
         },
-        deleteComment(commentId) {
+        deleteComment(commentId, postId) {
             if(confirm('Confirmez-vous la suppression de ce commentaire ?')){
                 instance.delete('post/'+commentId+'/comment')
                 .then(() => {
                     this.$emit('eventRefreshCom')
+                    this.refreshNumberOfComments(postId, -1)
                 })
                 .catch(error => console.log(error))
             } else {
                 return
             }
+        },
+        async refreshNumberOfComments(postId, value){
+
+            if(value == 1){
+                await instance.put('post/nbComment/' + postId, {
+                    count: value
+                })
+                .then((res) => {
+                    this.$emit('eventRereshNbCom', {
+                        postId: postId,
+                        number: res.data.data
+                    })
+                })
+                .catch(error => console.log(error))
+
+            } else if(value == -1) {
+                await instance.put('post/nbComment/' + postId, {
+                    count: value
+                })
+                .then((res) => {
+                    this.$emit('eventRereshNbCom', {
+                        postId: postId,
+                        number: res.data.data
+                    })
+                })
+                .catch(error => console.log(error))
+            }
+
         },
         timeComments: function (dateCreated, commentId) {
 

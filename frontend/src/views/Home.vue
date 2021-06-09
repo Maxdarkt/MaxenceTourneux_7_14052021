@@ -12,7 +12,7 @@
     </div>
   </div>
   <div> 
-    <GetAllsPots :key="refreshPosts" @eventModify="newModifyPost" @eventDelete="newDeletePost" />
+    <GetAllsPosts :key="refreshPosts" @eventModify="newModifyPost" @eventDelete="newDeletePost" />
   </div>
   <div v-if="openOrCloseModifyPost == 1">
     <ModifyPost @eventClose="closePost" @eventModified="newModifiedPost" :postId="modifyPostId" />
@@ -24,7 +24,7 @@
 <script>
 
 import CreatePost from '../components/CreatePost'
-import GetAllsPots from '../components/GetAllPosts.vue'
+import GetAllsPosts from '../components/GetAllPosts.vue'
 import ModifyPost from '../components/ModifyPost.vue'
 
 import { mapState } from 'vuex'
@@ -39,7 +39,7 @@ export default {
   name: 'Home',
   components: {
     CreatePost,
-    GetAllsPots,
+    GetAllsPosts,
     ModifyPost
   },
   data() {

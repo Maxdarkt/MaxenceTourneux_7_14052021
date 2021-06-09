@@ -1,5 +1,6 @@
 <template>
 <div>
+
 <div class="post" v-for="post in posts" :key="post">
     <div class="post__head">
       <div>
@@ -22,20 +23,20 @@
     <div class="post__description">
       <p>{{post.description}}</p>
     </div>
-    <div class="post__cont">
+    <div class="post__cont" v-if="loading == false">
         <div class="post__cont__foot">
             <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
             <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
-            <p class="comments"><i @click="loadComments(post.id)" class="far fa-comment-alt fa-2x"></i><span>5 comments</span></p>
+            <p class="comments"><i @click="loadComments(post.id, post.numberOfComments)" class="far fa-comment-alt fa-2x"></i>
+            <NumberComs :key="refreshNbOfComs" :numberOfComments="displayCom[post.id].numberOfComments" />
+            </p>
         </div>
         <div class="post__cont__action">
             <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)" >Modifier</button>
             <button class="button button--red" v-if="user.id == post.userId || user.admin == true" @click="deletePost(post.id)" >Supprimer</button>
         </div>
     </div>
-    <!-- <Comments v-if="Object.keys(openComs).includes(post.id)" :postId="post.id" :displayCom="displayCom" :comments="comments"/> -->
-    <!-- v-if="displayCom[postId].id == postId && displayCom[postId].check == 1" -->
-    <Comments :key="refreshComs" v-if="loading== false && displayCom[post.id].id == post.id && displayCom[post.id].check == 1" :comments="comments" :postId="post.id" @eventRefreshCom="refreshCom(post.id)" />
+    <Comments :key="refreshComs" v-if="loading== false && displayCom[post.id].id == post.id && displayCom[post.id].check == 1" :comments="comments" :postId="post.id" @eventRefreshCom="refreshCom(post.id)" @eventRereshNbCom="refreshNBComs"/>
   </div>
 </div>
 
@@ -43,6 +44,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import NumberComs from '../components/NumberComs.vue'
 import Comments from '../components/Comments.vue'
 
 const axios = require('axios')
@@ -54,19 +56,21 @@ const instance = axios.create({
 export default {
     name: 'Home',
     components: {
+    NumberComs,    
     Comments
     },
     data() {
 
         return {
             posts: [''],
-            displayCom: [],
             postId: 0,
             loading: true,
+            displayCom: [],
             comments: [],
             timePost: [],
             openComs: [],
             refreshComs: 0,
+            refreshNbOfComs: 0,
 
         }
     },
@@ -81,7 +85,7 @@ export default {
         .then(response => { 
             this.posts = response.data.data
             for(let i in this.posts) {
-            this.displayCom[this.posts[i].id] = ({"id" : this.posts[i].id, "check" : 0})
+            this.displayCom[this.posts[i].id] = ({"id" : this.posts[i].id, "check" : 0, "numberOfComments": this.posts[i].numberOfComments})
             }
         })
         .catch(error => { error })
@@ -93,15 +97,15 @@ export default {
         ...mapState(['user'])
     },
     methods: {
-        displayComments: function(postId){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
+        displayComments(postId, numberOfComs){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
             // console.log('displayComments reçoit : '+ postId)
                 if(this.displayCom[postId].id == postId && this.displayCom[postId].check == 0){
-                    this.displayCom[postId] = ({"id" : postId, "check" : 1})
+                    this.displayCom[postId] = ({"id" : postId, "check" : 1, "numberOfComments": numberOfComs})
                 } else if (this.displayCom[postId].id == postId && this.displayCom[postId].check == 1){
-                    this.displayCom[postId] = ({"id" : postId, "check" : 0})
+                    this.displayCom[postId] = ({"id" : postId, "check" : 0, "numberOfComments": numberOfComs})
                 }
         },
-        loadComments: function(postId){
+        loadComments(postId, numberOfComs){
             // console.log('loadComments :' + postId)
 
             instance.get('post/'+ postId +'/comments/' )
@@ -110,10 +114,10 @@ export default {
                 })
             .catch(error => { error })
             .finally(() => {
-                this.displayComments(postId)
+                this.displayComments(postId, numberOfComs)
             });
         },
-        time: function (dateCreated, postId) {
+        time (dateCreated, postId) {
 
             let dateMysql = Date.parse(dateCreated)
             let dateNow = Date.now()
@@ -163,6 +167,12 @@ export default {
                 })
             .catch(error => { error })
             this.refreshComs ++
+        },
+        refreshNBComs(payload){
+
+            this.displayCom[payload.postId] = ({"id" : payload.postId, "check" : 1, "numberOfComments": payload.number})
+
+            this.refreshNbOfComs ++
         }
     }
 } 
