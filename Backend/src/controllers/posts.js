@@ -1,4 +1,4 @@
-const { Post } = require('../db/sequelize')
+const { Post, Comment } = require('../db/sequelize')
 const { ValidationError, UniqueConstraintError } = require('sequelize')
 const { Op } = require('sequelize')
 const { response } = require('express')
@@ -192,18 +192,33 @@ exports.deletePost = (req, res) => {
           throw error;
         }
 
-        Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
+        return Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
           where: { id: post.id }//...pour éviter de taper 2 même blocs de code
         })
-        .then(_ => {
+        .then(() => {
           const message = `Le post avec l'identifiant n°${postDeleted.id} a bien été supprimé.`
-          res.json({message, data: postDeleted })
+          res.status(200).json({message, data: postDeleted })
         })
-        .catch(error => res.status(500).json({ error }))
       }) 
     })
     .catch(error => {
       const message = `Le post n'a pas pu être supprimé. Réessayez dans quelques instants.`
       res.status(500).json({ message, data: error})
     })
+
+    Comment.findAll({where: { postId: req.params.id }})
+    .then(comments => {
+      if(comments === null){
+        console.log(`Aucun commentaires pour le post ${req.params.id}`)
+        return
+      }
+      else{
+        return Comment.destroy({where: { postId: req.params.id }})
+        .then(() => {
+          const message = `Les commentaires liés au posts ${req.params.id} ont bien été supprimés`
+          res.status(200).json({ message, data: comments})
+        })
+      }
+    })
+    .catch(error => res.status(500).console.log({ error }))
 }

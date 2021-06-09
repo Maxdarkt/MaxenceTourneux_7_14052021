@@ -37,7 +37,7 @@ console.log(req.params.id)
 
 exports.deleteCommentByPostId = (req, res) => {
   console.log(req.params.id)
-  Post.destroy({ //return est là pour retourné l'erreur au catch en bas...
+  Comment.destroy({ //return est là pour retourné l'erreur au catch en bas...
     where: { id: req.params.id }//...pour éviter de taper 2 même blocs de code
   })
   .then(() => {
