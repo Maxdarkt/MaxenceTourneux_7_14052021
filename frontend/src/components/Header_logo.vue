@@ -8,12 +8,13 @@
 @import '/src/sass/_variables';
 
 .nav__logo{
-    width:20%;
+    width: 25%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     img{
-        height: 80px;
+      height: 40px;
+      margin: 10px 0px 10px 10px;
     }
 }    
 </style>

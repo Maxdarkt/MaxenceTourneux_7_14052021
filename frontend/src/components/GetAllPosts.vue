@@ -5,7 +5,7 @@
       <div>
         <p>{{post.username}}</p>
       </div>
-      <div v-if="loading == false && time(post.created, post.id)">
+      <div class="time" v-if="loading == false && time(post.created, post.id)">
         <p v-if="timePost[post.id].year == 1">Il y a {{timePost[post.id].year}} an</p>
         <p v-else-if="timePost[post.id].year > 1">Il y a {{timePost[post.id].year}} ans</p>
         <p v-else-if="timePost[post.id].day == 1">Il y a {{timePost[post.id].day}} jour</p>
@@ -35,7 +35,7 @@
     </div>
     <!-- <Comments v-if="Object.keys(openComs).includes(post.id)" :postId="post.id" :displayCom="displayCom" :comments="comments"/> -->
     <!-- v-if="displayCom[postId].id == postId && displayCom[postId].check == 1" -->
-    <Comments v-if="loading== false && displayCom[post.id].id == post.id && displayCom[post.id].check == 1" :comments="comments" :postId="post.id" />
+    <Comments :key="refreshComs" v-if="loading== false && displayCom[post.id].id == post.id && displayCom[post.id].check == 1" :comments="comments" :postId="post.id" @eventRefreshCom="refreshCom(post.id)" />
   </div>
 </div>
 
@@ -65,7 +65,8 @@ export default {
             loading: true,
             comments: [],
             timePost: [],
-            openComs: []
+            openComs: [],
+            refreshComs: 0,
 
         }
     },
@@ -154,6 +155,14 @@ export default {
             } else {
                 return
             }
+        },
+        async refreshCom(postId) {
+            await instance.get('post/'+ postId +'/comments' )
+            .then(response => { 
+                this.comments[postId] = response.data.data
+                })
+            .catch(error => { error })
+            this.refreshComs ++
         }
     }
 } 
@@ -231,5 +240,13 @@ export default {
             cursor: pointer;
         }
     }
+}
+.time{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    font-style: italic;
 }
 </style>

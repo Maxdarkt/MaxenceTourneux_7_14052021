@@ -4,13 +4,21 @@
             <table>
                 <tr>
                     <td class="col-1">
-                        {{comment.username}} a écrit :<br/>  [{{comment.created}}] :
+                        {{comment.username}} a écrit :<br/>
+                        <div class="time" v-if="timeComments(comment.created, comment.id)">
+                            <p v-if="timeComs[comment.id].year == 1">Il y a {{timeComs[comment.id].year}} an</p>
+                            <p v-else-if="timeComs[comment.id].year > 1">Il y a {{timeComs[comment.id].year}} ans</p>
+                            <p v-else-if="timeComs[comment.id].day == 1">Il y a {{timeComs[comment.id].day}} jour</p>
+                            <p v-else-if="timeComs[comment.id].day > 1">Il y a {{timeComs[comment.id].day}} jours</p>
+                            <p v-else-if="timeComs[comment.id].min == 1">Il y a {{timeComs[comment.id].min}} minute</p>
+                            <p v-else-if="timeComs[comment.id].min > 1">Il y a {{timeComs[comment.id].min}} minutes</p>
+                        </div>
                     </td>
                     <td class="col-2">
                         {{ comment.message}}
-                        </td>
+                    </td>
                     <td class="col-3">
-                        <button class="button button--red button--comment"><i class="fas fa-ban"></i></button>
+                        <button v-if="comment.userId == user.id || user.admin == true" class="button button--red button--comment" @click="deleteComment(comment.id)" ><i class="fas fa-ban"></i></button>
                     </td>
                 </tr>
             </table>
@@ -28,8 +36,8 @@
                         <button class="button button--blue button--comment" :class="{ 'button--disabled' : !validatedFieldsComments}" @click="onSubmitComment(postId)"><i class="fas fa-paper-plane"></i></button>
                     </td>
                 </tr>
-            </table>  
-        </div>  
+            </table>
+        </div>
     </div>
 
 </template>
@@ -48,6 +56,7 @@ export default {
     data() {
         return {
             message: '',
+            timeComs: [],
         }
     },
     props: {
@@ -69,8 +78,9 @@ export default {
     },
     methods:{
         onSubmitComment: function (postId) {
-            console.log('le commentaire correpon au post N° '+postId)
-            console.log(this.message)
+            if(!this.message){
+                return
+            }
 
             const body = {
             userId: this.$store.state.user.id,
@@ -87,24 +97,67 @@ export default {
 
             instance.post('post/'+postId+'/comment', {
                 comment: body})
-            .then((response) => {
-                //this.$emit('eventModified')
-                console.log(response)
+            .then(() => {
+                this.$emit('eventRefreshCom')
             })
             .catch(error => console.log(error))
 
 
-        }
+        },
+        deleteComment(commentId) {
+            if(confirm('Confirmez-vous la suppression de ce commentaire ?')){
+                instance.delete('post/'+commentId+'/comment')
+                .then(() => {
+                    this.$emit('eventRefreshCom')
+                })
+                .catch(error => console.log(error))
+            } else {
+                return
+            }
+        },
+        timeComments: function (dateCreated, commentId) {
+
+            let dateMysql = Date.parse(dateCreated)
+            let dateNow = Date.now()
+
+            var diff = {}                           // Initialisation du retour
+            var tmp = dateNow - dateMysql;
+        
+            tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+            diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+        
+            tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+            diff.min = tmp % 60;                    // Extraction du nombre de minutes
+        
+            tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+            diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+            
+            tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+            diff.day = tmp;
+
+            tmp = Math.floor((tmp-diff.day)/365);   // Nombre de jours restants
+            diff.year = tmp;
+
+            this.timeComs[commentId] = diff
+
+            return this.timeComs
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../sass/_variables';
-// .post__comments{
-
-// }
-
+.post__comments{
+    background-color: #e2e2e2;
+    border-radius: 0px 0px 15px 15px;
+    padding: 10px;
+    margin : 10px -10px -10px -10px;
+}
+table{
+    text-align: left;
+    width: 100%;
+}
 .col-1{
     width:19%;
 }
@@ -120,6 +173,11 @@ export default {
     width: 60px;
 }
 
+.time{
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    font-style: italic;
+}
 
 
 </style>
