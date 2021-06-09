@@ -16,8 +16,9 @@ exports.createPost = (req, res) => {
     username: postObject.username,
     title: postObject.title,
     description: postObject.description,
-    usersLiked: '0',
-    usersDisliked: '0',
+    numberOfComments: 0,
+    usersLiked: 0,
+    usersDisliked: 0,
     userIdLiked: '0',
     userIdDisliked: '0'
   }
@@ -60,8 +61,6 @@ exports.modifyPost = (req, res) => {
           username: req.body.post.username,
           title: req.body.post.title,
           description: req.body.post.description,
-          usersLiked: postObject.usersLiked,
-          usersDisliked: postObject.usersDisliked
         }, { where: { id: id } })
         .then((post) => {
           const message = `Le post ${post.title} a bien été modifié.`
@@ -101,8 +100,6 @@ exports.modifyPost = (req, res) => {
             username: req.body.username,
             title: req.body.title,
             description: req.body.description,
-            usersLiked: postObject.usersLiked,
-            usersDisliked: postObject.usersDisliked,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
           }, { where: { id: id } })
           .then((post) => {
@@ -222,3 +219,34 @@ exports.deletePost = (req, res) => {
     })
     .catch(error => res.status(500).console.log({ error }))
 }
+
+exports.numberOfComments = (req, res) => {
+
+  const id = req.params.id
+  let moreOrLess = req.body.count
+
+    Post.findByPk(id)
+    .then(post => {
+      if(post === null){
+        const message = `Le post demandé n'exsite pas. Réessayez avec un autre identifiant.`
+        return res.status(404).json({ message })
+      }
+      const newNumberOfComments = post.dataValues.numberOfComments + moreOrLess
+
+      return Post.update({
+        ...post.dataValues,
+        numberOfComments: newNumberOfComments
+      }, { where: { id: id } })
+      .then((post) => {
+        const message = `Il y a ${post.numberOfComments} commentaires pour ce post.`
+        res.status(200).json({message, data: newNumberOfComments })
+      })
+    })
+    .catch(error => {
+      if (error instanceof ValidationError) {
+        return res.status(400).json({ message: error.message, data: error })
+      }
+      const message = `Le nombre de commentaire n'a pas pu être modifié. Réessayez dans quelques instants.`
+      res.status(500).json({ message, data: error})
+    }) 
+} 

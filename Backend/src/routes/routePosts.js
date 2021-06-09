@@ -19,6 +19,9 @@ router.post('/:id/comment', auth, commentsCtrl.createComment)
 router.get('/:id/comments', auth, commentsCtrl.getAllCommentsByPostId)
 router.delete('/:id/comment', auth, commentsCtrl.deleteCommentByPostId)
 
+//Route MAJ du nombre de commentaires par post
+router.put('/nbComment/:id', auth, postsCtrl.numberOfComments)
+
 //Routes pour Liker commentaires
 router.post('/:id/like', auth, likeCtrl.likePost)
 

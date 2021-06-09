@@ -3,9 +3,6 @@ const { ValidationError } = require('sequelize')
 
 exports.createComment = (req, res) => {
 
-    console.log(req.params.id)
-    console.log(req.body.comment)
-
       Comment.create({
         ...req.body.comment
       })

@@ -37,20 +37,24 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "La description est une propriété requise." }
         }
       },
+      numberOfComments: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       usersLiked: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       usersDisliked: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       userIdLiked: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       userIdDisliked: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       }      
     }, {

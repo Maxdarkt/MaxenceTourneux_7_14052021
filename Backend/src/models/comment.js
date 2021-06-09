@@ -34,19 +34,19 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       usersLikedComment: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       usersDislikedComment: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       userIdLikedComment: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       userIdDislikedComment: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       }      
     }, {
