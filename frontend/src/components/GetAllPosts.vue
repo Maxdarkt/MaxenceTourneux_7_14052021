@@ -25,8 +25,8 @@
     </div>
     <div class="post__cont" v-if="loading == false">
         <div class="post__cont__foot">
-            <p class="like"><i class="far fa-thumbs-up fa-2x"></i><span>{{post.userIdLiked}}</span></p>
-            <p class="like"><i class="far fa-thumbs-down fa-2x"></i><span>{{post.userIdDisliked}}</span></p>
+            <Likes :postId="post.id" :usersLiked="post.usersLiked" :usersDisliked="post.usersDisliked" :post="post" @eventLiked="refreshLikes" :key="likes"/>
+
             <p class="comments"><i @click="loadComments(post.id, post.numberOfComments)" class="far fa-comment-alt fa-2x"></i>
             <NumberComs :key="refreshNbOfComs" :numberOfComments="displayCom[post.id].numberOfComments" />
             </p>
@@ -46,6 +46,7 @@
 import { mapState } from 'vuex'
 import NumberComs from '../components/NumberComs.vue'
 import Comments from '../components/Comments.vue'
+import Likes from '../components/Likes.vue'
 
 const axios = require('axios')
 
@@ -57,7 +58,8 @@ export default {
     name: 'Home',
     components: {
     NumberComs,    
-    Comments
+    Comments,
+    Likes
     },
     data() {
 
@@ -71,6 +73,7 @@ export default {
             openComs: [],
             refreshComs: 0,
             refreshNbOfComs: 0,
+            likes: 0
 
         }
     },
@@ -173,7 +176,21 @@ export default {
             this.displayCom[payload.postId] = ({"id" : payload.postId, "check" : 1, "numberOfComments": payload.number})
 
             this.refreshNbOfComs ++
+        },
+        async refreshLikes() {
+
+            await instance.get('post/')
+            .then(response => { 
+                this.posts = response.data.data
+                for(let i in this.posts) {
+                this.displayCom[this.posts[i].id] = ({"id" : this.posts[i].id, "check" : 0, "numberOfComments": this.posts[i].numberOfComments})
+                }
+                this.likes ++
+            })
+            .catch(error => { error })
+
         }
+
     }
 } 
 </script>
@@ -216,6 +233,7 @@ export default {
         &__foot{  
                 display: flex;
                 justify-content: flex-start;
+                width: 100%;
             p{
                 margin-right:10px;
             }
@@ -234,7 +252,7 @@ export default {
         } 
    
     }
-    .like, .comments{
+    .comments{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -242,8 +260,8 @@ export default {
         margin-right: 15px;
         span{
             margin-top:5px;
-        }
-    }
+        } 
+    } 
     .comments{
         align-self: flex-end;
         i{
