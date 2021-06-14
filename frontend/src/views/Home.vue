@@ -1,14 +1,12 @@
 <template>
 <div class="home">
 
-  <h1>Posts</h1>
   <div class="create-post">
-    <div class="create-post__user">
-      <button class="button button--1 new-post" @click="displayNewPost()" v-if="displayPost == 0">Publier un post</button>
-      <button class="button button--2 new-post" @click="displayNewPost()" v-if="displayPost == 1">Annuler la création de post</button>
-    </div>
+      <button class="button button--blue button--fixed">
+        <i class="fas fa-plus fa-2x" @click="displayNewPost"></i>
+      </button>
     <div v-if="displayPost == 1"> 
-      <CreatePost @eventPost="newPost"/>
+      <CreatePost @eventPost="newPost" @eventDisplayPost="displayNewPost" />
     </div>
   </div>
   <div> 
@@ -62,14 +60,12 @@ export default {
   },
   methods: {
     displayNewPost: function(){
-      console.log('before :'+ this.displayPost)
       if(this.displayPost == 0) {
         this.displayPost = 1
 
       } else {
         this.displayPost = 0
       }
-      console.log('after :'+ this.displayPost)
     },
     newPost: function (){
       this.refreshPosts ++
@@ -82,8 +78,6 @@ export default {
       } else {
         this.openOrCloseModifyPost = 0
       }
-      console.log('openOrCloseModifyPost: '+ this.openOrCloseModifyPost)
-      console.log('modifyPostId: '+ this.modifyPostId)
     },
     closePost: function() {
       this.openOrCloseModifyPost = 0
@@ -93,7 +87,6 @@ export default {
       this.openOrCloseModifyPost = 0
     },
     newDeletePost: function() {
-      console.log("delete : emit <=> event")
       this.refreshPosts ++
     }
   }
@@ -106,10 +99,18 @@ export default {
 
 .home{
   width: 100%;
-  margin-top:150px;
+  margin-top:100px;
 }
 
 .button{
+  &--fixed{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius:25px;
+  }
   &--1{
       width: 50%;
       background-color: $color-blue;

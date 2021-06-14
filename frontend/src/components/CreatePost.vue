@@ -1,27 +1,35 @@
 <template>
-    <div class="new-Post">
-        <div class="form-row">
-            <p>{{user.username}} :</p>
-        </div>
-        <div class="form-row">
-            <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
-        </div>
-        <div class="from-row">
-            <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="30" rows="8" required></textarea>
-        </div>
-        <div class="from-row">
-            <div v-if="!image">
-                <input type="file" @change="onFileChange" class="form-row__input" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required>
+    <div class="ct-create">
+
+        <div class="overlay"></div>
+
+        <div class="ct-create__card">
+            <div class="form-row">
+                <p>{{user.username}} :</p>
+                <i class="far fa-times-circle fa-2x" @click="sendDisplayPost"></i>
             </div>
-            <div v-else>
-                <img :src="image">
-                <button @click="removeImage">Supprimer l'image</button>
+            <div class="form-row">
+                <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
             </div>
+            <div class="from-row">
+                <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="30" rows="8" required></textarea>
+            </div>
+            <div class="from-row">
+                <div v-if="!image">
+                    <input type="file" @change="onFileChange" class="form-row__input" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required>
+                </div>
+                <div v-else>
+                    <img :src="image">
+                    <button @click="removeImage">Supprimer l'image</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
+            </div>      
         </div>
-        <div class="form-row">
-            <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
-        </div>      
     </div>
+    
+
 </template>
 
 <script>
@@ -98,6 +106,9 @@ export default {
         removeImage: function () {
         this.image = '';
         },
+        sendDisplayPost() {
+            this.$emit('eventDisplayPost')
+        }
     }
 }    
 </script>
@@ -106,24 +117,51 @@ export default {
 <style lang="scss" scoped>
 @import '../sass/_variables';
 
-.new-Post{
-    width: 60%;
-    margin: 20px;
-    padding: 20px;
-    border: 2px solid #BAD5EA;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius : 10px;
-    input, textarea {
-        border: 2px solid #BAD5EA;
+.ct-create{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .overlay{
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     }
-    img {
-    width: 95%;
-    margin: auto;
-    display: block;
-    margin-bottom: 10px;
+    &__card{
+        background-color: $color-bg-secondary;
+        color: #333;
+        padding: 10px;
+        position: fixed;
+        top: 100px;
+        border-radius: 20px;
+        width: 60%;
+        min-height: 500px;
+        i{
+            cursor: pointer;
+            width: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        input, textarea {
+            border: 2px solid #BAD5EA;
+        }
+        img {
+        width: 95%;
+        margin: auto;
+        display: block;
+        margin-bottom: 10px;
+        }
     }
 }
-
 
 </style>
