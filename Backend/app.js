@@ -6,7 +6,6 @@ const sequelize = require('./src/db/sequelize')
 const postsRoutes = require('./src/routes/routePosts')
 const loginRoutes = require('./src/routes/routeUsers')
 const path = require('path')
-const { countReset } = require('console')
  
 const app = express()
 
@@ -31,7 +30,7 @@ app
 //routes
 app.use('/images', express.static(path.join(__dirname, '/src/images')));
 
-// app.use(express.static('images'))
+//Initialisation de la BDD en phase développement
 //sequelize.initDb()
 
 //les points de terminaisons :
