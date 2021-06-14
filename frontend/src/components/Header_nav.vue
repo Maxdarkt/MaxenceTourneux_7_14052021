@@ -27,6 +27,7 @@ export default {
 
 <style lang="scss">
 @import '/src/sass/_variables';
+@import '/src/sass/_mixins';
 
 .nav__items{
     width: 150px;

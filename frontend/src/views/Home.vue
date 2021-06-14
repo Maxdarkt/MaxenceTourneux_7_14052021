@@ -96,10 +96,18 @@ export default {
 
 <style lang="scss">
 @import '../sass/_variables';
+@import '../sass/_mixins';
 
+body{
+  background-color: #ffffff;
+}
 .home{
   width: 100%;
   margin-top:100px;
+  @include mobile-only{
+    margin-top:0px;
+  }
+
 }
 
 .button{

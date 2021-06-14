@@ -4,6 +4,7 @@
         <div class="overlay"></div>
 
         <div class="ct-create__card">
+            <h2>Créer une publication</h2>
             <div class="form-row">
                 <p>{{user.username}} :</p>
                 <i class="far fa-times-circle fa-2x" @click="sendDisplayPost"></i>
@@ -12,15 +13,15 @@
                 <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
             </div>
             <div class="from-row">
-                <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="30" rows="8" required></textarea>
+                <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" required></textarea>
             </div>
             <div class="from-row">
-                <div v-if="!image">
+                <div class="preview" v-if="!image">
                     <input type="file" @change="onFileChange" class="form-row__input" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required>
                 </div>
-                <div v-else>
+                <div class="preview" v-else>
                     <img :src="image">
-                    <button @click="removeImage">Supprimer l'image</button>
+                    <button class="center" @click="removeImage">Supprimer l'image</button>
                 </div>
             </div>
             <div class="form-row">
@@ -116,7 +117,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../sass/_variables';
-
+.center{
+display: flex;
+justify-content: center;
+align-items: center;
+}
 .ct-create{
     position: fixed;
     top: 0;
@@ -143,8 +148,14 @@ export default {
         position: fixed;
         top: 100px;
         border-radius: 20px;
-        width: 60%;
-        min-height: 500px;
+        width: 80%;
+        min-height: 550px;
+        h2{
+            margin-bottom : 0;
+        }
+        p:first-child{
+            margin-top: 0;
+        }
         i{
             cursor: pointer;
             width: 30px;
@@ -156,12 +167,20 @@ export default {
             border: 2px solid #BAD5EA;
         }
         img {
-        width: 95%;
+        width: 80%;
+        height: auto;
         margin: auto;
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         }
     }
+}
+.preview{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-height: 400px;
 }
 
 </style>

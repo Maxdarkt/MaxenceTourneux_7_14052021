@@ -27,12 +27,13 @@ export default {
 
 <style lang="scss">
 @import '/sass/_variables';
+@import '/sass/_mixins';
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans JP', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-weight: 400;
   color: black;
 }
 
@@ -41,17 +42,30 @@ html, body{
   margin: 0px;
 }
 
+html{
+  width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  @include tablette-only{
+    width: 100%;
+  }
+}
+
 .nav {
   position: fixed;
-  width:100%;
-  top:0;
+  width: 100%;
+  top: 0;
+  left: 0;
   padding: 0px;
-  height:80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff;
   z-index: 1000;
+  @include mobile-only{
+    position: inherit;
+  }
 }
 
 .button{

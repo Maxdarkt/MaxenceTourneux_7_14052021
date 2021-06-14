@@ -6,9 +6,9 @@
 
 <style lang="scss">
 @import '/src/sass/_variables';
+@import '/src/sass/_mixins';
 
 .nav__logo{
-    width: 25%;
     display: flex;
     align-items: center;
     justify-content: space-around;

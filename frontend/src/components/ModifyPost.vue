@@ -17,7 +17,7 @@
                 <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
             </div>
             <div class="from-row">
-                <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" cols="30" rows="8" required></textarea>
+                <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" required></textarea>
             </div>
             <div class="from-row">
                 <div v-if="!image">
@@ -172,8 +172,14 @@ export default {
         position: fixed;
         top: 100px;
         border-radius: 20px;
-        width: 60%;
-        min-height: 500px;
+        width: 80%;
+        min-height: 550px;
+        h2{
+            margin-bottom : 0;
+        }
+        p:first-child{
+            margin-top: 0;
+        }
         &__head{
         display: flex;
         justify-content: space-between;
@@ -186,19 +192,23 @@ export default {
                 right: 10px;
             }
         }
-        .preview{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 50px;
-            max-height: 300px;
-        }
-        img{
-            height:250px;
+        img {
+        width: 80%;
+        height: auto;
+        max-height: 100%;
+        margin: auto;
+        display: block;
+        margin-bottom: 20px;
         }
     }
 }
+.preview{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-height: 400px;
+}    
 
 
 </style>

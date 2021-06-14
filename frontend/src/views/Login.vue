@@ -108,10 +108,12 @@ export default {
 
 <style lang="scss">
 @import '../sass/_variables';
-
+body{
+    background-color: $color-bg-primary;
+}
 .container-card{
     background-color: $color-bg-primary;
-    min-height: 100vh;
+    min-height: 81.5vh;
     width: 100%;
     margin-top: 80px;
     padding-top: 100px;

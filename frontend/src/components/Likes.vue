@@ -132,14 +132,12 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width:25%;
 }
 .like{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
     cursor: pointer;
     span{
         margin-top:5px;

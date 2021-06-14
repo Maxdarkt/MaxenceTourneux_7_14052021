@@ -197,6 +197,7 @@ export default {
 
 <style lang="scss">
 @import '../sass/_variables';
+@import '../sass/_mixins';
 
 .post{
   //background-color: rgb(209, 204, 204);
@@ -216,10 +217,17 @@ export default {
     justify-content: flex-start;
   }
   &__view{
-    height:250px;
+    height:500px;
     border-radius: 15px;
     background-position: center;
     background-size: cover;
+    @include tablette-only{
+        height: 350px;
+    }
+    @include mobile-only{
+        height:250px;
+    }
+
   }
   &__description{
     display: flex;
@@ -235,7 +243,7 @@ export default {
                 justify-content: flex-start;
                 width: 100%;
             p{
-                margin-right:10px;
+                margin-right:15px;
             }
             &__comments{
                 background-color: rgb(202, 198, 198);
@@ -246,8 +254,15 @@ export default {
             display: flex;
             justify-content: space-around;
             align-items: center;
+            @include mobile-only{
+                width: 250px;
+            }
             .button{
                 width: 150px;
+                margin-left: 15px;
+                @include mobile-only{
+                    width: 120px;
+                }
             }
         } 
    
@@ -272,9 +287,10 @@ export default {
 .time{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 0.8rem;
     color: #aaaaaa;
     font-style: italic;
+    width:60%;
 }
 </style>

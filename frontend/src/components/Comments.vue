@@ -30,7 +30,7 @@
                         {{user.username}} :
                     </td>
                     <td class="col-2">
-                        <textarea type="text" name="message" v-model="message" placeholder="Nouveau Commentaire" cols="60" rows="4"></textarea>
+                        <textarea type="text" name="message" v-model="message" placeholder="Nouveau Commentaire"></textarea>
                     </td>
                     <td class="col-3">
                         <button class="button button--blue button--comment" :class="{ 'button--disabled' : !validatedFieldsComments}" @click="onSubmitComment(postId)"><i class="fas fa-paper-plane"></i></button>
@@ -192,7 +192,20 @@ table{
     width:19%;
 }
 .col-2{
-    width:60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    textarea{
+        width: 90%;
+        height:60px;
+        border: none;
+        border-radius: 10px;
+        padding:8px;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: 'Noto Sans JP', Helvetica, Arial, sans-serif;
+    }
 }
 .col-3{
     width:10%;
