@@ -6,8 +6,9 @@ const Posts = require('./mock-post')
 const Comments = require('./mock-comments')
 const bcrypt = require('bcrypt')
 const comments = require('../models/comment')
+require('dotenv').config();
   
-const sequelize = new Sequelize('groupomania', 'root', '', {
+const sequelize = new Sequelize(process.env.DB_GROUP, process.env.DB_USER, process.env.DB_MDP, {
   host: 'localhost',
   dialect: 'mariadb',
   dialectOptions: {

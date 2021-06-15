@@ -6,6 +6,9 @@ const sequelize = require('./src/db/sequelize')
 const postsRoutes = require('./src/routes/routePosts')
 const loginRoutes = require('./src/routes/routeUsers')
 const path = require('path')
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
  
 const app = express()
 
@@ -37,6 +40,14 @@ app.use('/images', express.static(path.join(__dirname, '/src/images')));
 app.use('/api/post', postsRoutes)
 app.use('/api/auth', loginRoutes)
 
+const limiter = rateLimit({
+  windowMs: 15 *60 * 1000,
+  max: 100
+});
+
+//sécurité
+app.use(limiter);
+app.use(helmet());
 
 //On ajoute la gestion des erreurs 404
 app.use(({ res }) => {
