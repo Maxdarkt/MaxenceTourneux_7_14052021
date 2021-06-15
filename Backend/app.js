@@ -1,5 +1,5 @@
 const express = require('express')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
@@ -27,8 +27,12 @@ app.use((req, res, next) => {
 
 app
     .use(favicon(__dirname + '/favicon.ico'))
-    .use(morgan('dev'))//URL en console
+    // .use(morgan('dev'))//URL en console
     .use(express.json())
+
+app.get('/', (req, res) => {
+  res.json('Hello Heroku !')
+})
 
 //routes
 app.use('/images', express.static(path.join(__dirname, '/src/images')));
