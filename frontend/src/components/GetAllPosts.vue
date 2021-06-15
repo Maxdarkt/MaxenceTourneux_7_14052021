@@ -11,6 +11,8 @@
         <p v-else-if="timePost[post.id].year > 1">Il y a {{timePost[post.id].year}} ans</p>
         <p v-else-if="timePost[post.id].day == 1">Il y a {{timePost[post.id].day}} jour</p>
         <p v-else-if="timePost[post.id].day > 1">Il y a {{timePost[post.id].day}} jours</p>
+        <p v-else-if="timePost[post.id].hour == 1">Il y a {{timePost[post.id].hour}} heure</p>
+        <p v-else-if="timePost[post.id].hour > 1">Il y a {{timePost[post.id].hour}} heures</p>
         <p v-else-if="timePost[post.id].min == 1">Il y a {{timePost[post.id].min}} minute</p>
         <p v-else-if="timePost[post.id].min > 1">Il y a {{timePost[post.id].min}} minutes</p>
       </div>

@@ -66,6 +66,9 @@ export default {
         },
         ...mapState([ 'status', 'user' ])
     },
+    created(){
+        document.getElementById('app').style.width="100%"
+    },
     methods: {
         switchToCreateAccount: function() {
             this.mode = 'create';
@@ -107,10 +110,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../sass/_variables';
-body{
-    background-color: $color-bg-primary;
-}
+@import '../sass/main';
+
 .container-card{
     background-color: $color-bg-primary;
     min-height: 81.5vh;
@@ -130,28 +131,6 @@ body{
         color: $color-bg-primary;
         text-decoration-line: underline;
         cursor: pointer;
-    }
-}
-
-.form-row {
-display: flex;
-margin: 16px 0px;
-gap:16px;
-flex-wrap: wrap;
-    &__input, &__textarea {
-    width: 95%;  
-    padding:8px;
-    border: none;
-    border-radius: 8px;
-    background:#f2f2f2;
-    font-weight: 500;
-    font-size: 16px;
-    flex:1;
-    min-width: 100px;
-    color: black;
-    }
-    &::placeholder {
-        color:#aaaaaa;
     }
 }
 

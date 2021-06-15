@@ -54,6 +54,8 @@ export default {
   created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
+    document.getElementById('app').style.width="980px"
+
   },
   computed: {
     ...mapState(['user'])
@@ -95,47 +97,19 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../sass/_variables';
-@import '../sass/_mixins';
+@import '../sass/main';
 
-body{
-  background-color: #ffffff;
+#app{
+  width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  @include tablette-only{
+    width: 100%;
+  }
 }
+
 .home{
-  width: 100%;
   margin-top:100px;
-  @include mobile-only{
-    margin-top:0px;
-  }
-
 }
 
-.button{
-  &--fixed{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius:25px;
-  }
-  &--1{
-      width: 50%;
-      background-color: $color-blue;
-      &:hover{
-        transform: scale(1.01);
-        background-color: brightness($color-blue, 10%);
-        box-shadow: 0px 12px 7px $color-shadow-1;
-      } 
-  }
-  &--2{
-    width: 50%;
-    background-color: $color-red; 
-    &:hover{
-      transform: scale(1.01);
-      background-color: brightness($color-red, 10%);
-      box-shadow: 0px 12px 7px $color-shadow-1;
-    }
-  }
-}
 </style>

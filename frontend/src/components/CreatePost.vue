@@ -80,6 +80,9 @@ export default {
                 this.createImage(files[0]); // appel de la fonction pour créer l'aperçu
         },
         async onSubmit() {
+            if (this.title == "" || this.description == "" || this.FILE == "") {
+                return
+            }
             const body = new FormData()
             body.append('image', this.FILE, this.FILE.name)
             body.append('userId', this.$store.state.user.id)

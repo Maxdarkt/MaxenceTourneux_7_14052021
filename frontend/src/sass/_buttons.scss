@@ -1,0 +1,71 @@
+.button{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition : all 400ms;
+    &--blue{
+        background-color: $color-blue;
+        &:hover{
+            transform: scale(1.01);
+            background-color: lighten($color-blue, 4%);
+            box-shadow: 0px 12px 7px $color-shadow-1;
+        }
+    }
+    &--green{
+      background-color: $color-green;
+      &:hover{
+          transform: scale(1.01);
+          background-color: lighten($color-green, 4%);
+          box-shadow: 0px 12px 7px $color-shadow-1;
+      }
+    }
+    &--red{
+      background-color: $color-red;
+      &:hover{
+          transform: scale(1.01);
+          background-color: lighten($color-red, 4%);
+          box-shadow: 0px 12px 7px $color-shadow-1;
+      }
+    }
+    &--disabled{
+        background-color: $color-disabled;
+        cursor: not-allowed;
+            &:hover{
+            transition:none;
+            background-color: $color-disabled;
+            transform:none;
+            box-shadow: none;
+            }
+    }
+    &--fixed{
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius:25px;
+      }
+      &--1{
+          width: 50%;
+          background-color: $color-blue;
+          &:hover{
+            transform: scale(1.01);
+            background-color: brightness($color-blue, 10%);
+            box-shadow: 0px 12px 7px $color-shadow-1;
+          } 
+      }
+      &--2{
+        width: 50%;
+        background-color: $color-red; 
+        &:hover{
+          transform: scale(1.01);
+          background-color: brightness($color-red, 10%);
+          box-shadow: 0px 12px 7px $color-shadow-1;
+        }
+      }
+}

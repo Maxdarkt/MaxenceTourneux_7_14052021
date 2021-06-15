@@ -38,6 +38,9 @@ export default {
   computed: {
     ...mapState(['user'])
   },
+  created(){
+      document.getElementById('app').style.width="100%"
+  },
   methods: {
         logout: function() {
             const self = this;
@@ -66,6 +69,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../sass/main';
+
+body{
+  background-color: $color-bg-primary;
+}
+
 .card{
   height:400px;
 }

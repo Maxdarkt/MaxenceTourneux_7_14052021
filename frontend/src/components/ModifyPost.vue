@@ -89,7 +89,10 @@ export default {
                 this.createImage(files[0]); // appel de la fonction pour créer l'aperçu
         },
         async onModify(postId) {
-            
+            if (this.title == "" || this.description == "" || this.FILE == "") {
+                return
+            }
+
             if(this.FILE){//Si image = formData
                 const body = new FormData()
                 body.append('image', this.FILE, this.FILE.name)
