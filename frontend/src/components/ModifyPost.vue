@@ -57,8 +57,7 @@ export default {
         }
     },
     props:{
-        postId: Number,
-        post: Array
+        postId: Number
         
     },
     computed: {
