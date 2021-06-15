@@ -1,34 +1,32 @@
 <template>
     
-    <div class="ct-modify">
+    <div class="ct-post">
 
         <div class="overlay"></div>
 
-        <div class="ct-modify__card">
-            <div class="ct-modify__card__head">
+        <div class="ct-post__card">
+            <div class="ct-post__card__head">
                 <h2>Modifier le Post</h2>
                 <i class="far fa-times-circle fa-2x" @click="closeModifyPost"></i>
             </div>
 
-            <div class="form-row">
+            <div class="ct-post__card__username">
                 <p>{{user.username}} :</p>
             </div>
-            <div class="form-row">
+            <div class="ct-post__card__form">
                 <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
-            </div>
-            <div class="from-row">
                 <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" required></textarea>
             </div>
-            <div class="from-row">
+            <div class="ct-post__card__preview">
                 <div v-if="!image">
                     <input type="file" @change="onFileChange" class="form-row__input" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required>
                 </div>
-                <div class="preview" v-else>
+                <div class="ct-post__card__preview__img" v-else>
                     <img :src="image">
                     <button @click="removeImage">Supprimer l'image</button>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="ct-post__card__action">
                 <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts }" @click="onModify(postId)">Modifier</button>
             </div>  
         </div>
@@ -59,7 +57,8 @@ export default {
         }
     },
     props:{
-        postId: Number
+        postId: Number,
+        post: Array
         
     },
     computed: {
@@ -74,6 +73,7 @@ export default {
     },
     created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+    console.log(this.post)
 
     },
     methods: {
@@ -89,7 +89,7 @@ export default {
                 this.createImage(files[0]); // appel de la fonction pour créer l'aperçu
         },
         async onModify(postId) {
-            if (this.title == "" || this.description == "" || this.FILE == "") {
+            if (this.title == "" || this.description == "") {
                 return
             }
 
@@ -146,10 +146,10 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-@import '../sass/_variables';
+<style lang="scss">
+@import '../sass/main';
 
-.ct-modify{
+.ct-post{
     position: fixed;
     top: 0;
     bottom: 0;
@@ -176,7 +176,6 @@ export default {
         top: 100px;
         border-radius: 20px;
         width: 80%;
-        min-height: 550px;
         h2{
             margin-bottom : 0;
         }
@@ -195,23 +194,40 @@ export default {
                 right: 10px;
             }
         }
-        img {
-        width: 80%;
-        height: auto;
-        max-height: 100%;
-        margin: auto;
-        display: block;
-        margin-bottom: 20px;
+        &__form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            input{
+                margin-bottom: 20px;
+            }
+            textarea{
+                height: 50px;
+                margin-bottom: 20px;
+            }
+        }
+        &__preview{
+            width:100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            &__img{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                img{
+                width: 80%;
+                margin: 10px;
+                }
+            }
         }
     }
 }
-.preview{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-height: 400px;
-}    
+  
 
 
 </style>

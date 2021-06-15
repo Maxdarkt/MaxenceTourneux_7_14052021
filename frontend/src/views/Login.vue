@@ -67,7 +67,7 @@ export default {
         ...mapState([ 'status', 'user' ])
     },
     created(){
-        document.getElementById('app').style.width="100%"
+        // document.getElementById('app').style.width="100%"
     },
     methods: {
         switchToCreateAccount: function() {
@@ -111,6 +111,7 @@ export default {
 
 <style lang="scss">
 @import '../sass/main';
+
 
 .container-card{
     background-color: $color-bg-primary;

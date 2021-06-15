@@ -13,7 +13,7 @@
     <GetAllsPosts :key="refreshPosts" @eventModify="newModifyPost" @eventDelete="newDeletePost" />
   </div>
   <div v-if="openOrCloseModifyPost == 1">
-    <ModifyPost @eventClose="closePost" @eventModified="newModifiedPost" :postId="modifyPostId" />
+    <ModifyPost @eventClose="closePost" @eventModified="newModifiedPost" :postId="modifyPostId" :post="post"/>
   </div>
 </div>
 
@@ -32,6 +32,7 @@ const axios = require('axios')
 const instance = axios.create({
     baseURL: 'http://localhost:3000/api/'
 })
+
 
 export default {
   name: 'Home',
@@ -54,11 +55,22 @@ export default {
   created () {
     instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
-    document.getElementById('app').style.width="980px"
+    // document.getElementById('app').style.width="980px"
 
   },
   computed: {
-    ...mapState(['user'])
+      responsive(){
+        if(document.body.clientWidth < 980 ){
+          return console.log('<980 : ', document.body.clientWidth)
+          // return document.getElementById('app').style.width="100%"
+        }
+        else{
+          return console.log('else : ', document.body.clientWidth)
+          // return document.getElementById('app').style.width="980px"
+        }
+      },
+
+    ...mapState(['user']),
   },
   methods: {
     displayNewPost: function(){
@@ -99,16 +111,11 @@ export default {
 <style lang="scss">
 @import '../sass/main';
 
-#app{
-  width: 980px;
+.home{
+  max-width: 980px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
-  @include tablette-only{
-    width: 100%;
-  }
-}
-
-.home{
   margin-top:100px;
 }
 

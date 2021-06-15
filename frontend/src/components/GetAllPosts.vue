@@ -34,7 +34,7 @@
             </p>
         </div>
         <div class="post__cont__action">
-            <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)" >Modifier</button>
+            <button class="button button--green" v-if="user.id == post.userId" @click="modifyPost(post.id)">Modifier</button>
             <button class="button button--red" v-if="user.id == post.userId || user.admin == true" @click="deletePost(post.id)" >Supprimer</button>
         </div>
     </div>

@@ -1,30 +1,30 @@
 <template>
-    <div class="ct-create">
+    <div class="ct-post">
 
         <div class="overlay"></div>
 
-        <div class="ct-create__card">
-            <h2>Créer une publication</h2>
-            <div class="form-row">
-                <p>{{user.username}} :</p>
+        <div class="ct-post__card">
+            <div class="ct-post__card__head">
+                <h2>Créer une publication</h2>
                 <i class="far fa-times-circle fa-2x" @click="sendDisplayPost"></i>
             </div>
-            <div class="form-row">
-                <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
+            <div class="ct-post__card__username">
+                <p>{{user.username}} :</p>
             </div>
-            <div class="from-row">
+            <div class="ct-post__card__form">
+                <input v-model="title" type="text" class="form-row__input" name ="title" id="title" placeholder="Titre du Post" required/>
                 <textarea  v-model="description" class="form-row__textarea" name ="description" id="description" placeholder="Description" required></textarea>
             </div>
-            <div class="from-row">
+            <div class="ct-post__card__preview">
                 <div class="preview" v-if="!image">
                     <input type="file" @change="onFileChange" class="form-row__input" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required>
                 </div>
-                <div class="preview" v-else>
+                <div class="ct-post__card__preview__img" v-else>
                     <img :src="image">
                     <button class="center" @click="removeImage">Supprimer l'image</button>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="ct-post__card__action">
                 <button class="button button--blue" :class="{ 'button--disabled' : !validatedFieldsPosts}" @click="onSubmit">Publier</button>
             </div>      
         </div>
@@ -118,72 +118,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-@import '../sass/_variables';
-.center{
-display: flex;
-justify-content: center;
-align-items: center;
-}
-.ct-create{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width:100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .overlay{
-    background-color: rgba(0,0,0,0.5);
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    }
-    &__card{
-        background-color: $color-bg-secondary;
-        color: #333;
-        padding: 10px;
-        position: fixed;
-        top: 100px;
-        border-radius: 20px;
-        width: 80%;
-        min-height: 550px;
-        h2{
-            margin-bottom : 0;
-        }
-        p:first-child{
-            margin-top: 0;
-        }
-        i{
-            cursor: pointer;
-            width: 30px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        input, textarea {
-            border: 2px solid #BAD5EA;
-        }
-        img {
-        width: 80%;
-        height: auto;
-        margin: auto;
-        display: block;
-        margin-bottom: 20px;
-        }
-    }
-}
-.preview{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-height: 400px;
-}
+<style lang="scss">
+
 
 </style>

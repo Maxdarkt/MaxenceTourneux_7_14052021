@@ -41,6 +41,10 @@ html {
     color: black;
 }
 
+#app{
+  width: 100%;
+}
+
 .nav {
   position: fixed;
   width: 100%;
