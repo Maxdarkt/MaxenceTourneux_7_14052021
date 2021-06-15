@@ -8,14 +8,29 @@ const bcrypt = require('bcrypt')
 const comments = require('../models/comment')
 require('dotenv').config();
   
-const sequelize = new Sequelize(process.env.DB_GROUP, process.env.DB_USER, process.env.DB_MDP, {
-  host: 'localhost',
-  dialect: 'mariadb',
-  dialectOptions: {
-    timezone: 'Etc/GMT-2',
-  },
-  logging: false
-})
+let sequelize
+
+if(process.env.NODE_ENV === 'production') {
+  sequelize = new Sequelize(process.env.DB_NAME_PROD, process.env.DB_USER_PROD, process.env.DB_MDP_PROD, {
+    host: 'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    dialect: 'mariadb',
+    dialectOptions: {
+      timezone: 'Etc/GMT-2',
+    },
+    logging: true
+  })
+} else {
+  sequelize = new Sequelize(process.env.DB_NAME_DEV, process.env.DB_USER_DEV, process.env.DB_MDP_DEV, {
+    host: 'localhost',
+    dialect: 'mariadb',
+    dialectOptions: {
+      timezone: 'Etc/GMT-2',
+    },
+    logging: false
+  })
+}
+
+
   
 const Post = PostModel(sequelize, DataTypes)
 const User = UserModel(sequelize, DataTypes) 
