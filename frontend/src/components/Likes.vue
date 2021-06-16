@@ -32,11 +32,6 @@
 
 <script>
 import { mapState } from 'vuex'
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
 
 export default {
     name: 'Likes',
@@ -52,10 +47,11 @@ export default {
         }
     },
     computed:{
-        ...mapState(['user'])
+        ...mapState(['user']),
+        ...mapState(['url'])
     },
     created () {
-        instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+        this.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
     },
     methods: {
@@ -73,7 +69,7 @@ export default {
             if(like == 1 && listOfuserIdLiked.includes(likeInfos.userId.toString())){
                 likeInfos.like = 0
 
-                await instance.post('post/'+postId+'/like', {
+                await this.url.instance.post('post/'+postId+'/like', {
                     like: likeInfos})
                 .then(() => {
                     this.$emit('eventLiked')
@@ -85,7 +81,7 @@ export default {
             }if(like == -1 && listOfuserIdDisliked.includes(likeInfos.userId.toString())){
                 likeInfos.like = 0
 
-                await instance.post('post/'+postId+'/like', {
+                await this.url.instance.post('post/'+postId+'/like', {
                     like: likeInfos})
                 .then(() => {
                     this.$emit('eventLiked')
@@ -101,7 +97,7 @@ export default {
             else if(like == 1){
                 likeInfos.like = 1
 
-                await instance.post('post/'+postId+'/like', {
+                await this.url.instance.post('post/'+postId+'/like', {
                     like: likeInfos})
                 .then(() => {
                     this.$emit('eventLiked')
@@ -112,7 +108,7 @@ export default {
             else if(like == -1) {
                 likeInfos.like = -1
 
-                await instance.post('post/'+postId+'/like', {
+                await this.url.instance.post('post/'+postId+'/like', {
                     like: likeInfos})
                 .then(() => {
                     this.$emit('eventLiked')

@@ -45,12 +45,6 @@
 <script>
 import { mapState } from 'vuex'
 
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
-
 export default {
     name : 'Comments',
     data() {
@@ -72,10 +66,11 @@ export default {
                 return false;
             }
         },
-        ...mapState(['user'])
+        ...mapState(['user']),
+        ...mapState(['url'])
     },
     created () {
-    instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+    this.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
     },
     methods:{
         onSubmitComment(postId) {
@@ -95,7 +90,7 @@ export default {
 
             }
 
-            instance.post('post/'+postId+'/comment', {
+            this.url.instance.post('post/'+postId+'/comment', {
                 comment: body})
             .then(() => {
                 this.$emit('eventRefreshCom')
@@ -107,7 +102,7 @@ export default {
         },
         deleteComment(commentId, postId) {
             if(confirm('Confirmez-vous la suppression de ce commentaire ?')){
-                instance.delete('post/'+commentId+'/comment')
+                this.url.instance.delete('post/'+commentId+'/comment')
                 .then(() => {
                     this.$emit('eventRefreshCom')
                     this.refreshNumberOfComments(postId, -1)
@@ -120,7 +115,7 @@ export default {
         async refreshNumberOfComments(postId, value){
 
             if(value == 1){
-                await instance.put('post/nbComment/' + postId, {
+                await this.url.instance.put('post/nbComment/' + postId, {
                     count: value
                 })
                 .then((res) => {
@@ -132,7 +127,7 @@ export default {
                 .catch(error => console.log(error))
 
             } else if(value == -1) {
-                await instance.put('post/nbComment/' + postId, {
+                await this.url.instance.put('post/nbComment/' + postId, {
                     count: value
                 })
                 .then((res) => {

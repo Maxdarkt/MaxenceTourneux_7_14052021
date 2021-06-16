@@ -1,9 +1,17 @@
 import { createStore } from 'vuex'
 const axios = require('axios')
 
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
+let instance
+
+if(process.env.NODE_ENV === 'production') {
+    instance = axios.create({
+        baseURL: 'https://shrouded-shore-34432.herokuapp.com/api/'
+    })
+} else {
+    instance = axios.create({
+        baseURL: 'http://localhost:3000/api/'
+    })
+}
 
 const store = createStore({
     state: {
@@ -15,7 +23,9 @@ const store = createStore({
             email: '',
             admin: '',
         },
-
+        url: {
+            instance: instance
+        }
     },
     getters: {
 

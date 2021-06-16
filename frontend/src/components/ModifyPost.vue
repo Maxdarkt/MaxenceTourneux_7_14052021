@@ -39,12 +39,6 @@
 <script>
 import { mapState } from 'vuex'
 
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
-
 export default {
     name: 'ModifyPost',
     data() {
@@ -68,10 +62,11 @@ export default {
                     return false;
                 }
         },
-        ...mapState(['user'])
+        ...mapState(['user']),
+        ...mapState(['url'])
     },
     created () {
-    instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+    this.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
     console.log(this.post)
 
     },
@@ -100,7 +95,7 @@ export default {
                 body.append('title', this.title)
                 body.append('description', this.description)
 
-                await instance.put('post/'+postId, body)
+                await this.url.instance.put('post/'+postId, body)
                 .then(() => {
                     this.$emit('eventModified')
                 })
@@ -114,7 +109,7 @@ export default {
                 description: this.description
                 }
 
-                await instance.put('post/'+postId, {
+                await this.url.instance.put('post/'+postId, {
                     post: body})
                 .then(() => {
                     this.$emit('eventModified')

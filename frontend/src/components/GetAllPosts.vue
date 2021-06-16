@@ -50,12 +50,6 @@ import NumberComs from '../components/NumberComs.vue'
 import Comments from '../components/Comments.vue'
 import Likes from '../components/Likes.vue'
 
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
-
 export default {
     name: 'Home',
     components: {
@@ -80,13 +74,13 @@ export default {
         }
     },
     created () {
-        instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+        this.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
     },
     async mounted () {
         this.loading = true //On attend la fin de la fonction pour charger les commentaires et récupérer les valeurs à transmettre
 
-        await instance.get('post/')
+        await this.url.instance.get('post/')
         .then(response => { 
             this.posts = response.data.data
             for(let i in this.posts) {
@@ -99,7 +93,8 @@ export default {
         });
     },
     computed: {
-        ...mapState(['user'])
+        ...mapState(['user']),
+        ...mapState(['url'])
     },
     methods: {
         displayComments(postId, numberOfComs){// Gestion de l'affichage des commentaires avec un objet stocké dans un array => displayCom
@@ -113,7 +108,7 @@ export default {
         loadComments(postId, numberOfComs){
             // console.log('loadComments :' + postId)
 
-            instance.get('post/'+ postId +'/comments/' )
+            this.url.instance.get('post/'+ postId +'/comments/' )
             .then(response => { 
                 this.comments[postId] = response.data.data
                 })
@@ -156,7 +151,7 @@ export default {
         },
         deletePost(postId){
             if(confirm('Confirmez-vous la suppression de ce post ?')){
-            instance.delete('post/'+ postId)
+            this.url.instance.delete('post/'+ postId)
             .then(() => { 
                 this.$emit('eventDelete')
             })
@@ -166,7 +161,7 @@ export default {
             }
         },
         async refreshCom(postId) {
-            await instance.get('post/'+ postId +'/comments' )
+            await this.url.instance.get('post/'+ postId +'/comments' )
             .then(response => { 
                 this.comments[postId] = response.data.data
                 })
@@ -181,7 +176,7 @@ export default {
         },
         async refreshLikes() {
 
-            await instance.get('post/')
+            await this.url.instance.get('post/')
             .then(response => { 
                 this.posts = response.data.data
                 for(let i in this.posts) {

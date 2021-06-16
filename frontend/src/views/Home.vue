@@ -27,12 +27,6 @@ import ModifyPost from '../components/ModifyPost.vue'
 
 import { mapState } from 'vuex'
 
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
-
 
 export default {
   name: 'Home',
@@ -53,9 +47,7 @@ export default {
     }
   },
   created () {
-    instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
-
-    // document.getElementById('app').style.width="980px"
+    this.$store.state.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
 
   },
   computed: {

@@ -35,13 +35,6 @@
 
 <script>
 import { mapState } from 'vuex'
-// import router from '../router/index'
-
-const axios = require('axios')
-
-const instance = axios.create({
-    baseURL: 'http://localhost:3000/api/'
-})
 
 export default {
 
@@ -66,10 +59,11 @@ export default {
                 return false;
             }
         },
-        ...mapState(['user'])
+        ...mapState(['user']),
+        ...mapState(['url'])
     },
     created () {
-    instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
+    this.url.instance.defaults.headers.common['Authorization'] = 'Bearen ' + this.$store.state.user.token;
     },
     methods: {
         onFileChange (e) {
@@ -90,7 +84,7 @@ export default {
             body.append('title', this.title)
             body.append('description', this.description)
 
-            await instance.post('post/', body)
+            await this.url.instance.post('post/', body)
             .then(() => { 
                     this.$emit('eventPost')
             })
